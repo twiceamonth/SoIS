@@ -4,5 +4,5 @@ import org.example.utils.BaseUtils
 
 fun main() {
     val util = BaseUtils()
-    print(util.text2array("АБВГДЕЖЗЙКЛМНОПРСТУФХЦЧШЩЬЭЮЯ_"))
+    println(util.subTxt("ИЖЬЯМАНЕ", "В_ТУМАНЕ"))
 }
