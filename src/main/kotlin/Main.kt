@@ -1,5 +1,8 @@
 package org.example
 
+import org.example.utils.BaseUtils
+
 fun main() {
-    println("Hello World!")
+    val util = BaseUtils()
+    print(util.text2array("АБВГДЕЖЗЙКЛМНОПРСТУФХЦЧШЩЬЭЮЯ_"))
 }
