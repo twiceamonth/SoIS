@@ -1,8 +1,12 @@
 package org.example
 
+import org.example.algs.Cesar
 import org.example.utils.BaseUtils
 
 fun main() {
     val util = BaseUtils()
-    println(util.subTxt("ИЖЬЯМАНЕ", "В_ТУМАНЕ"))
+    val cesar = Cesar(util)
+
+    println(cesar.frw_Cesar("СЫЗРАНЬ", "А"))
+    println(cesar.inv_Cesar("ТЬИСБОЭ", "А"))
 }
