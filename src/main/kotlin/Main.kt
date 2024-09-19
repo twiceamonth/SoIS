@@ -1,13 +1,17 @@
 package org.example
 
 import org.example.algs.Cesar
+import org.example.algs.SBlockImpl
 import org.example.utils.BaseUtils
 
 fun main() {
     val util = BaseUtils()
     val cesar = Cesar(util)
+    val sBlock = SBlockImpl(util)
 
-    val out = cesar.frw_poly_Cesar("ОЛОЛО_КРИНЖ", "Х", 0)
+    val K = "ЗВЁЗДНАЯ_НОЧЬ"
+    val in1 = "БЛОК"
+    val out = sBlock.frw_S(in1, K, 11)
     println(out)
-    println(cesar.inv_poly_Cesar(out, "Х", 0))
+    println(sBlock.inv_S(out, K, 11))
 }
