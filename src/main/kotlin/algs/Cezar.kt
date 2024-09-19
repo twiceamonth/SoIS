@@ -32,4 +32,36 @@ class Cesar(private val util: BaseUtils) {
 
         return out
     }
+
+    /*              Poly-alphabet                */
+
+    fun frw_poly_Cesar(txtIn: String, keyIn: String, jIn:Int): String {
+        var out = ""
+        var tK = "_"
+        val k = keyIn.length
+
+        for(i in 0..<txtIn.length) {
+            val tI = txtIn[i].toString()
+            val q = (i+jIn) % k
+            tK = util.addS(tK, keyIn[q].toString())
+            out += util.addS(tI, tK)
+        }
+
+        return out
+    }
+
+    fun inv_poly_Cesar(txtIn: String, keyIn: String, jIn:Int): String {
+        var out = ""
+        var tK = "_"
+        val k = keyIn.length
+
+        for(i in 0..<txtIn.length) {
+            val tI = txtIn[i].toString()
+            val q = (i+jIn) % k
+            tK = util.addS(tK, keyIn[q].toString())
+            out += util.subS(tI, tK)
+        }
+
+        return out
+    }
 }

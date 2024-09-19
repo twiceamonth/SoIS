@@ -7,6 +7,7 @@ fun main() {
     val util = BaseUtils()
     val cesar = Cesar(util)
 
-    println(cesar.frw_Cesar("СЫЗРАНЬ", "А"))
-    println(cesar.inv_Cesar("ТЬИСБОЭ", "А"))
+    val out = cesar.frw_poly_Cesar("ОЛОЛО_КРИНЖ", "Х", 0)
+    println(out)
+    println(cesar.inv_poly_Cesar(out, "Х", 0))
 }
