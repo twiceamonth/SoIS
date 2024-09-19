@@ -96,4 +96,44 @@ class BaseUtils {
         }
         return out
     }
+
+    fun frwImproveBlock(blockIn: String, keyIn: String, jIn: Int): String {
+        var t = keyIn
+
+        while(jIn > t.length-4) t += t
+
+        val key = t.substring(t.indexOf(t[jIn]), t.indexOf(t[jIn]) + 4)
+        val k = text2array(key)
+        val b = text2array(blockIn).toMutableList()
+        val q = (k[0]+k[1]+k[2]+k[3]) % 4
+
+        for(i in 0..2) {
+            val j = (q+i+1) % 4
+            val l = (q+i) % 4
+            b[j] = (b[j] + b[l]) % 32
+        }
+
+        val out = array2text(b)
+        return out
+    }
+
+    fun invImproveBloc(blockIn: String, keyIn: String, jIn: Int): String {
+        var t = keyIn
+
+        while(jIn > t.length-4) t += t
+
+        val key = t.substring(t.indexOf(t[jIn]), t.indexOf(t[jIn]) + 4)
+        val k = text2array(key)
+        val b = text2array(blockIn).toMutableList()
+        val q = (k[0]+k[1]+k[2]+k[3]) % 4
+
+        for(i in 2 downTo 0) {
+            val j = (q+i+1) % 4
+            val l = (q+i) % 4
+            b[j] = (b[j] - b[l] + 32) % 32
+        }
+
+        val out = array2text(b)
+        return out
+    }
 }
