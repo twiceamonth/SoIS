@@ -1,3 +1,4 @@
+import org.example.algs.Cesar
 import org.example.algs.SBlockImpl
 import org.example.utils.BaseUtils
 import org.junit.jupiter.api.Assertions.*
@@ -6,7 +7,8 @@ import org.junit.jupiter.api.Test
 class SBlockImplTest {
 
     private val utils = BaseUtils()
-    private val sBlock = SBlockImpl(utils)
+    private val cesar = Cesar(utils)
+    private val sBlock = SBlockImpl(utils, cesar)
 
     @Test
     fun testFrwS() {
