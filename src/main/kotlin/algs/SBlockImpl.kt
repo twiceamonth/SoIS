@@ -4,7 +4,7 @@ import org.example.utils.BaseUtils
 
 class SBlockImpl(private val utils: BaseUtils) : SBlock {
     override fun frw_S(blockIn: String, keyIn: String, jIn: Int): String {
-        var out = "inout error"
+        var out = "input error"
 
         if(blockIn.length != 4) return out
 
@@ -21,7 +21,7 @@ class SBlockImpl(private val utils: BaseUtils) : SBlock {
     }
 
     override fun inv_S(blockIn: String, keyIn: String, jIn: Int): String {
-        var out = "inout error"
+        var out = "input error"
 
         if(blockIn.length != 4) return out
 

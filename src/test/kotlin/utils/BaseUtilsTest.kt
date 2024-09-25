@@ -86,4 +86,19 @@ class BaseUtilsTest {
         assertEquals("Я__Н_", utils.subTxt("БАРОН", "ВАРАН"))
         assertEquals("ЕЖИК____", utils.subTxt("ИЖЬЯМАНЕ", "В_ТУМАНЕ"))
     }
+
+    @Test
+    fun testFrwImproveBlock() {
+        assertEquals("ЬООЫ", utils.frwImproveBlock("АТОЛ", "ГОРАЦИО", 2))
+        assertEquals("ЬЯОЫ", utils.frwImproveBlock("АВОЛ", "ГОРАЦИО", 2))
+        assertEquals("АУВО", utils.frwImproveBlock("АТОЛ", "ГОРАЦИО", 3))
+    }
+
+    @Test
+    fun testInvImproveBlock() {
+        assertEquals("АТОЛ", utils.invImproveBloc("ЬООЫ", "ГОРАЦИО", 2))
+        assertEquals("АВОЛ", utils.invImproveBloc("ЬЯОЫ", "ГОРАЦИО", 2))
+        assertEquals("АТОЛ", utils.invImproveBloc("АУВО", "ГОРАЦИО", 3))
+
+    }
 }
