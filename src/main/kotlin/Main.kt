@@ -6,6 +6,7 @@ import org.example.algs.SBlockImpl
 import org.example.utils.BaseUtils
 import java.security.Key
 import javax.swing.text.Keymap
+import kotlin.system.exitProcess
 
 fun main() {
     val util = BaseUtils()
