@@ -11,7 +11,7 @@ import kotlin.system.exitProcess
 fun main() {
     val util = BaseUtils()
     val cesar = Cesar(util)
-    val sBlock = SBlockImpl(util, cesar)
+    val sBlock = SBlockImpl(util, cesar )
 
     while (true) {
         println("Для выхода из приложения напишите q")

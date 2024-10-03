@@ -1,8 +1,11 @@
 package org.example.utils
 
 import kotlin.math.min
+import kotlin.math.truncate
 
 class BaseUtils {
+
+    /*              Cesar               */
     fun sym2num(symIn: String): Int {
         if (symIn.length > 1) throw Exception("Passed more than 1 symbol")
         val tmp = symIn.toCharArray().map { it.code }
@@ -134,6 +137,60 @@ class BaseUtils {
         }
 
         val out = array2text(b)
+        return out
+    }
+
+    /*              Random Generator                */
+
+    fun div(num_in: Int, den_in: Int): Int {
+        return truncate((num_in/den_in).toDouble()).toInt()
+    }
+    fun block2num(bloc_in: String): Int {
+        if(bloc_in.length != 4) throw Error("Block must be 4 symbols length")
+
+        var out = 0
+        var pos = 1
+        val tmp = text2array(bloc_in)
+
+        for (i in 3 downTo 0) {
+            out += pos * tmp[i]
+            pos *= 32
+        }
+
+        return out
+    }
+
+    fun num2block(num_in: Int): String {
+        var rem = num_in
+        val tmp = mutableListOf<Int>()
+        // вместо заполнения массива мусором заранее развернул ход массива и по идее итог тот же самый
+        for (i in 3 downTo 0){
+            tmp += rem % 32
+            rem = div(rem, 32)
+        }
+        return array2text(tmp)
+    }
+
+    fun dec2bin(num_in: Int): List<Int> {
+        var rem = num_in
+        val out = mutableListOf<Int>()
+
+        // вместо заполнения массива мусором заранее развернул ход массива и по идее итог тот же самый
+        for (i in 19 downTo 0) {
+            out += rem % 2
+            rem = div(rem, 2)
+        }
+
+        return out
+    }
+
+    fun bin2dec(bin_in: List<Int>): Int {
+        var out = 0
+
+        for (i in 0..19) {
+            out = 2 * out + bin_in[i] // возможно тут +=
+        }
+
         return out
     }
 }
