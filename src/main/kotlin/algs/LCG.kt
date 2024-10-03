@@ -2,7 +2,6 @@ package org.example.algs
 
 import org.example.utils.BaseUtils
 import kotlin.math.pow
-import kotlin.time.times
 
 class LCG(
     private val utils: BaseUtils,
