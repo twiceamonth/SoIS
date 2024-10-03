@@ -24,7 +24,7 @@ class SBlockImpl(private val utils: BaseUtils, private val cesar: Cesar) : SBloc
         val data = block_in
         val c = const_in.length
         val C = "ТПУ" + const_in + const_in.substring(0..<4)
-        var key =  C.substring(3..<4)
+        var key =  C.substring(3..<3+4)
 
         var out = ""
 
@@ -32,7 +32,7 @@ class SBlockImpl(private val utils: BaseUtils, private val cesar: Cesar) : SBloc
             val q = (i*4) % c + 3
             val tmp = frw_S(data, key, 0)
             val s = utils.block2num(tmp) % 4
-            key = utils.addTxt(tmp, C.substring(q-s..<4))
+            key = utils.addTxt(tmp, C.substring(q-s..<q-s+4))
 
             out = tmp
         }

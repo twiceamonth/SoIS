@@ -38,4 +38,5 @@ class CesarTest {
         assertEquals("ОЛОЛО_КРИНЖ", cesar.inv_poly_Cesar("ДЧРГЭГДАОЙШ", "Х", 1))
         assertEquals("ОЛОЛО_КРИНЖ", cesar.inv_poly_Cesar("ПЫРУЕД_ЖМДГ", "ПАНТЕОН", 1))
     }
+
 }

@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test
 class SBlockImplTest {
 
     private val utils = BaseUtils()
-    private val sBlock = SBlockImpl(utils, Cesar(utils))
+    private val cesar = Cesar(utils)
+    private val sBlock = SBlockImpl(utils, cesar)
     private val block_in1 = "КРОТ"
     private val block_in2 = "КРУТ"
     private val block_in3 = "ТОРК"
@@ -46,5 +47,48 @@ class SBlockImplTest {
         assertEquals("_РЗГ", sBlock.frw_S(block_in1, key1, 0))
         assertEquals("ДРМИ", sBlock.frw_S(block_in2, key1, 0))
         assertEquals("ШРЗГ", sBlock.frw_S(block_in5, key1, 0))
+    }
+    @Test
+    fun testOnesideCesarBasicCase() {
+        val block_in = "ВАСЯ"
+        val const_in1 = "____"
+        val const_in2 = "АААА"
+        val const_in3 = "ББББ"
+        val expected1 = "ЙКЮЩ"
+        val expected2 = "ГУВЕ"
+        val expected3 = "УЧШЙ"
+        val n_in = 6
+
+        val result1 = sBlock.oneside_cesar(block_in, const_in1, n_in)
+        assertEquals(expected1, result1)
+
+        val result3 = sBlock.oneside_cesar(block_in, const_in3, n_in)
+        assertEquals(expected3, result3)
+
+        val result2 = sBlock.oneside_cesar(block_in, const_in2, n_in)
+        assertEquals(expected2, result2)
+    }
+
+    @Test
+    fun testOnesideCesarSameBlockin() {
+        val block_1 = "____"
+        val block_2 = "___А"
+        val block_3 = "Б___"
+        val const_in = "ЗЕЛЕНЫЙ_ШАР"
+        val n_in = 4
+
+        val expected1 = "ЧУЕП"
+        val expected2 = "ЧФХШ"
+        val expected3 = "ПЗРЯ"
+
+
+        val result1 = sBlock.oneside_cesar(block_1, const_in, n_in)
+        assertEquals(expected1, result1)
+
+        val result3 = sBlock.oneside_cesar(block_3, const_in, n_in)
+        assertEquals(expected3, result3)
+
+        val result2 = sBlock.oneside_cesar(block_2, const_in, n_in)
+        assertEquals(expected2, result2)
     }
 }
