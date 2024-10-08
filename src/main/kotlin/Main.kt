@@ -1,6 +1,7 @@
 package org.example
 
 import org.example.algs.Cesar
+import org.example.algs.LCG
 import org.example.algs.SBlock
 import org.example.algs.SBlockImpl
 import org.example.utils.BaseUtils
