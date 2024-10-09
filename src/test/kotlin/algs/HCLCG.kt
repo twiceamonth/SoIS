@@ -1,4 +1,0 @@
-package algs
-
-class HCLCG {
-}
