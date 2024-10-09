@@ -164,8 +164,8 @@ class BaseUtils {
     fun num2block(num_in: Int): String {
         var rem = num_in
         val tmp = mutableListOf<Int>()
-        // вместо заполнения массива мусором заранее развернул ход массива и по идее итог тот же самый
-        for (i in 3 downTo 0){
+        // вместо заполнения массива мусором заранее развернул ход массива и по идее итог тот же самый 3 downTo 0
+        for (i in 0..3){
             tmp += rem % 32
             rem = div(rem, 32)
         }
@@ -176,8 +176,8 @@ class BaseUtils {
         var rem = num_in
         val out = mutableListOf<Int>()
 
-        // вместо заполнения массива мусором заранее развернул ход массива и по идее итог тот же самый
-        for (i in 19 downTo 0) {
+        // вместо заполнения массива мусором заранее развернул ход массива и по идее итог тот же самый 19 downTo 0
+        for (i in 0..19) {
             out += rem % 2
             rem = div(rem, 2)
         }
