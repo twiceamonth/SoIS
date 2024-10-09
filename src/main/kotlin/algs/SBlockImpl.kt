@@ -39,4 +39,17 @@ class SBlockImpl(private val utils: BaseUtils, private val cesar: Cesar) : SBloc
 
         return out
     }
+
+    fun make_seed(block_in: String): List<String> {
+        val str1 = "ПЕРВЫЙ_ГЕНЕРАТОР"
+        val str2 = "ВТОРОЙ_ГЕНЕРАТОР"
+        val str3 = "ТРЕТИЙ_ГЕНЕРАТОР"
+
+        val out = mutableListOf<String>()
+        out += oneside_cesar(block_in, str1, 10)
+        out += oneside_cesar(block_in, str2, 10)
+        out += oneside_cesar(block_in, str3, 10)
+
+        return out
+    }
 }

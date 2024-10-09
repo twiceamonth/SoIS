@@ -254,22 +254,6 @@ class BaseUtils {
         return out
     }
 
-    //// os_fun это анонимная функция которой надо будет подать тело из вне
-    //// пример вызова из main:
-    //// [make_seed("АААА") { block_in, const_in, n_in -> sBlock.oneside_cesar(block_in, const_in, n_in) }]
-    fun make_seed(block_in: String, os_fun: (block_in: String, const_in: String, n_in: Int) -> String): List<String> {
-        val str1 = "ПЕРВЫЙ_ГЕНЕРАТОР"
-        val str2 = "ВТОРОЙ_ГЕНЕРАТОР"
-        val str3 = "ТРЕТИЙ_ГЕНЕРАТОР"
-
-        val out = mutableListOf<String>()
-        out += os_fun(block_in, str1, 10)
-        out += os_fun(block_in, str2, 10)
-        out += os_fun(block_in, str3, 10)
-
-        return out
-    }
-
     fun seed2nums(array_in: List<String>): List<Int> {
         val out = mutableListOf<Int>()
 
