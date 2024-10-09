@@ -130,5 +130,23 @@ class BaseUtilsTest {
         assertEquals(32028, utils.bin2dec( mutableListOf<Int>(0,0,0,0,0,1,1,1,1,1,0,1,0,0,0,1,1,1,0,0)))
         assertEquals(1048575, utils.bin2dec( mutableListOf<Int>(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)))
     }
+    @Test
+    fun testCountUnityBits() {
+        assertEquals(7, utils.count_unity_bits(1231))
+        assertEquals(8, utils.count_unity_bits(723482))
+    }
+    @Test
+    fun testComposeNum() {
+        val tst1 = 1231
+        val tst2 = 723482
 
+        assertEquals(tst1, utils.compose_num(tst1,tst2,0))
+        assertEquals(tst2, utils.compose_num(tst2,tst1,0))
+        assertEquals(tst2, utils.compose_num(tst1,tst2,20))
+        assertEquals(tst1, utils.compose_num(tst2,tst1,20))
+        assertEquals(723151, utils.compose_num(tst2,tst1,10))
+        assertEquals(1562, utils.compose_num(tst1,tst2,10))
+        assertEquals(1242, utils.compose_num(tst1,tst2,14))
+        assertEquals(723471, utils.compose_num(tst2,tst1,14))
+    }
 }

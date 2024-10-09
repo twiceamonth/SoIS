@@ -246,7 +246,7 @@ class BaseUtils {
         }
 
         // мб тут чтото не сойдется
-        for (i in cont_in + 1..19) {
+        for (i in cont_in until 20) {
             tmp += arr2[i]
         }
 
