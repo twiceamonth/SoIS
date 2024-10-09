@@ -6,7 +6,7 @@ class CHCLCG(
     private val seed: String, private val coeffs: List<List<Int>>
 ) {
     private val hclcg = mutableListOf<HCLCG>()
-    private var seeds: List<List<Int>> = emptyList()
+    private var seeds: MutableList<List<Int>> = mutableListOf()
     private var state: List<Int> = emptyList()
 
     private val utils = BaseUtils()
@@ -22,22 +22,23 @@ class CHCLCG(
         var stream = ""
 
         for (i in 0..3) {
-            seeds += listOf(
-                utils.seed2nums(sBlock.make_seed(seed.substring(seed.indexOf(seed[4]), seed.indexOf(seed[4]) + i*4)))
-            )
+            val substr = seed.substring(i * 4, (i * 4) + 4)
+            val seedSegment = sBlock.make_seed(substr)
+            seeds.add(utils.seed2nums(seedSegment))
         }
+
 
         // такое говнище наверное, писал как понял что хотят
         for (j in 0..3) {
-            var tmp = 0
+            var tmp: Long = 0
             var sign = 1
             for (i in 0..3) {
                 hclcg += HCLCG(seeds[i], coeffs)
-                state += hclcg[i].HCLCG_next()
-                tmp = (1048576 + sign * state[0] + tmp) % 1048576
+                var res:Int = hclcg[i].HCLCG_next()
+                tmp = (1048576 + sign * res + tmp) % 1048576
                 sign = -sign
             }
-            stream += utils.num2block(tmp)
+            stream += utils.num2block(tmp.toInt())
         }
 
         return stream
