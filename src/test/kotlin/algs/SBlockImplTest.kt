@@ -91,4 +91,8 @@ class SBlockImplTest {
         val result2 = sBlock.oneside_cesar(block_2, const_in, n_in)
         assertEquals(expected2, result2)
     }
+    @Test
+    fun testMakeSeed() {
+        assertEquals(mutableListOf<String>("ЗЗЕП","ТОБУ","ИВТС"), sBlock.make_seed("КОЛА"))
+    }
 }

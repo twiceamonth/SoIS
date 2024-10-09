@@ -149,4 +149,9 @@ class BaseUtilsTest {
         assertEquals(1242, utils.compose_num(tst1,tst2,14))
         assertEquals(723471, utils.compose_num(tst2,tst1,14))
     }
+    @Test
+    fun testSeed2Num() {
+        assertEquals(mutableListOf<Int>(270544,638036,298610), utils.seed2nums(mutableListOf<String>("ЗЗЕП","ТОБУ","ИВТС")))
+    }
+
 }
