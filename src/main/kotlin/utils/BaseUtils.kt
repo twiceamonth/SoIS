@@ -169,7 +169,7 @@ class BaseUtils {
             tmp += rem % 32
             rem = div(rem, 32)
         }
-        return array2text(tmp)
+        return array2text(tmp).reversed()
     }
 
     fun dec2bin(num_in: Int): List<Int> {
@@ -182,7 +182,7 @@ class BaseUtils {
             rem = div(rem, 2)
         }
 
-        return out
+        return out.reversed()
     }
 
     fun bin2dec(bin_in: List<Int>): Int {
