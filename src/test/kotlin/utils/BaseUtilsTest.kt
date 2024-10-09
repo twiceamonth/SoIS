@@ -101,4 +101,34 @@ class BaseUtilsTest {
         assertEquals("АТОЛ", utils.invImproveBloc("АУВО", "ГОРАЦИО", 3))
 
     }
+    @Test
+    fun testBlock2Num() {
+        assertEquals(34916, utils.block2num("АБВГ"))
+        assertEquals(32028, utils.block2num("_ЯЗЬ"))
+        assertEquals(1048575, utils.block2num("ЯЯЯЯ"))
+
+    }
+
+
+    @Test
+    fun testNum2Block() {
+        assertEquals("АБВГ", utils.num2block(34916))
+        assertEquals("_ЯЗЬ", utils.num2block(32028))
+        assertEquals("ЯЯЯЯ", utils.num2block(1048575))
+
+    }
+    @Test
+    fun testDec2Bin() {
+        assertEquals( mutableListOf<Int>(0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,1,0,0), utils.dec2bin(34916))
+        assertEquals( mutableListOf<Int>(0,0,0,0,0,1,1,1,1,1,0,1,0,0,0,1,1,1,0,0), utils.dec2bin(32028))
+        assertEquals( mutableListOf<Int>(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1), utils.dec2bin(1048575))
+
+    }
+    @Test
+    fun testBin2Dec() {
+        assertEquals(34916, utils.bin2dec( mutableListOf<Int>(0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,1,0,0)))
+        assertEquals(32028, utils.bin2dec( mutableListOf<Int>(0,0,0,0,0,1,1,1,1,1,0,1,0,0,0,1,1,1,0,0)))
+        assertEquals(1048575, utils.bin2dec( mutableListOf<Int>(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)))
+    }
+
 }
