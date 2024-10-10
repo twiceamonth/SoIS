@@ -95,4 +95,11 @@ class SBlockImplTest {
     fun testMakeSeed() {
         assertEquals(mutableListOf<String>("ЗЗЕП","ТОБУ","ИВТС"), sBlock.make_seed("КОЛА"))
     }
+    @Test
+    fun testCheckSeed() {
+        assertEquals("ААААГБЗЧББББЧККМ", sBlock.check_seed("ААААААААББББББББ"))
+        assertEquals("ВВВВГГГГААААФПЬЬ", sBlock.check_seed("ВВВВГГГГАААААААА"))
+        assertEquals("ААААГБЗЧЬЯГКДЖЮЗ", sBlock.check_seed("АААААААААААААААА"))
+        assertEquals("____МЕУЬТНХТЖЛЦЫ", sBlock.check_seed("________________"))
+    }
 }

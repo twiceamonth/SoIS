@@ -52,4 +52,22 @@ class SBlockImpl(private val utils: BaseUtils, private val cesar: Cesar) : SBloc
 
         return out
     }
+    fun check_seed(block_in: String): String {
+        val C = "ОТВЕТСТВЕННЫЙ_ПОДХОД"
+        val T = mutableListOf<String>()
+
+        for (i in 0..3) {
+            T += block_in.substring(block_in.indexOf(block_in[4*i]), block_in.indexOf(block_in[4*i]) + 4)
+        }
+
+        for (j in 0..2) {
+            for (i in j+1..3) {
+                if(T[i] == T[j]) {
+                    T[i] = oneside_cesar(T[j], C, j+2*i)
+                }
+            }
+        }
+
+        return T[0] + T[1] + T[2] + T[3]
+    }
 }

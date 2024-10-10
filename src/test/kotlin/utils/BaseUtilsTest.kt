@@ -154,4 +154,5 @@ class BaseUtilsTest {
         assertEquals(mutableListOf<Int>(270544,638036,298610), utils.seed2nums(mutableListOf<String>("ЗЗЕП","ТОБУ","ИВТС")))
     }
 
+
 }
