@@ -1,5 +1,6 @@
 package org.example.utils
 
+import org.example.algs.CHCLCG
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.truncate
@@ -204,7 +205,6 @@ class BaseUtils {
         val bb = bpr_in.max()
         val sb = spr_in.max()
 
-        // немножко закостылил
         val max = (2.0.pow(pow_in)).toInt() - 1
         var tmp = bs * ss
         val a = ss * bs * sb + 1
@@ -245,7 +245,6 @@ class BaseUtils {
             tmp += arr1[i]
         }
 
-        // мб тут чтото не сойдется
         for (i in cont_in until 20) {
             tmp += arr2[i]
         }
@@ -263,5 +262,58 @@ class BaseUtils {
         return out
     }
 
+    /*              lab3                */
+
+    fun subblocks_xor(blocka_in: String, blockb_in: String): String {
+        val decA = block2num(blocka_in)
+        val decB = block2num(blockb_in)
+
+        val binA = dec2bin(decA)
+        val binB = dec2bin(decB)
+
+        val binO = mutableListOf<Int>()
+        for (i in 0..binA.size) {
+            binO += ((binA[i] + binB[i]) % 2)
+        }
+        val decO = bin2dec(binO)
+
+        return num2block(decO)
+    }
+
+    fun bloc_xor(blocka_in: String, blockb_in: String): String {
+        val nb = div(blocka_in.length, 4)
+        var out = ""
+
+        for (i in 0..nb) {
+            val tmpA = blocka_in.substring(blocka_in.indexOf(blocka_in[4*i]), blocka_in.indexOf(blocka_in[4*i]) + 4)
+            val tmpB = blockb_in.substring(blockb_in.indexOf(blockb_in[4*i]), blockb_in.indexOf(blockb_in[4*i]) + 4)
+            out += subblocks_xor(tmpA, tmpB)
+        }
+
+        return out
+    }
+
+    fun make_lcg_set(): List<List<Int>> {
+        return listOf(
+            listOf(723482, 8677, 983609),
+            listOf(252564, 9109, 961193),
+            listOf(357630, 8971, 948209),
+        )
+    }
+
+    // я ббрал эти s_fun и rcg_fun, сид в общем будем извне сразу подавать
+    fun produce_round_keys(key_in: String, num_in: Int, seedfun: String): List<String> {
+        val set = make_lcg_set()
+        val rcg = CHCLCG(seedfun, set)
+        val out = mutableListOf<String>(rcg.CHCLCG_next())
+
+        if(num_in > 1) {
+            for (i in 1..num_in) {
+                out += rcg.CHCLCG_next() // тут как сид -1 в методичке ват?
+            }
+        }
+
+        return out
+    }
 
 }

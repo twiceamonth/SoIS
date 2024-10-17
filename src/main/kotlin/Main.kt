@@ -1,9 +1,6 @@
 package org.example
 
-import org.example.algs.Cesar
-import org.example.algs.LCG
-import org.example.algs.SBlock
-import org.example.algs.SBlockImpl
+import org.example.algs.*
 import org.example.utils.BaseUtils
 import java.security.Key
 import javax.swing.text.Keymap
@@ -12,14 +9,14 @@ import kotlin.system.exitProcess
 fun main() {
     val util = BaseUtils()
     val cesar = Cesar(util)
-    val sBlock = SBlockImpl(util, cesar )
+    val sBlock = SBlockImpl(util, cesar)
 
     while (true) {
         println("Для выхода из приложения напишите q")
         println("Для работы с шифром цезаря напишите c")
         println("Для работы с S-блоком напишите s")
         val input = readln().lowercase()
-        when(input) {
+        when (input) {
             "q" -> return
             "c" -> c(cesar)
             "s" -> s(sBlock)

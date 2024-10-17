@@ -5,8 +5,8 @@ import kotlin.test.assertNotEquals
 
 class CHCLCGTest {
 
-
-    @Test
+    // тест для не модифицированного генератора
+    /*@Test
     fun CHCLCGTestCase1(){
         val seed = "АБВГДЕЖЗИЙКЛМНОП"
         var set = mutableListOf<MutableList<Int>>(mutableListOf<Int>(723482,8677,983609),mutableListOf<Int>(252564,9109,961193),mutableListOf<Int>(357630,8971,948209))
@@ -30,7 +30,8 @@ class CHCLCGTest {
             "ДФТВЩПВЕСЗМЧЦХЯЧ"),out)
 
 
-    }
+    }*/
+
     @Test
     fun CHCLCGTestCase2(){
         val seed1 = "ААААББББВВВВГГГГ"
