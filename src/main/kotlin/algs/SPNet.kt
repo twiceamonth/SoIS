@@ -52,4 +52,29 @@ class SPNet {
         }
         return out
     }
+
+    fun LB2B(block_in: String): List<Int> {
+        val out = mutableListOf<Int>()
+        for (q in 0..3) {
+            val t = block_in.substring(block_in.indexOf(block_in[q*4]), block_in.indexOf(block_in[q*4]) + 4)
+            val tmp = utils.dec2bin(utils.block2num(t))
+            for (i in 0..19) {
+                out += tmp[i]
+            }
+        }
+        return out
+    }
+
+    fun B2LB(block_in: String): String {
+        var out = ""
+        for (q in 0..3) {
+            val tmp = mutableListOf<Int>()
+            for (i in 0..19) {
+                tmp.add(i, block_in[i+q*20].code)
+            }
+            val t = utils.num2block(utils.bin2dec(tmp))
+            out += t
+        }
+        return out
+    }
 }
