@@ -272,7 +272,7 @@ class BaseUtils {
         val binB = dec2bin(decB)
 
         val binO = mutableListOf<Int>()
-        for (i in 0..binA.size) {
+        for (i in 0..binA.size-1) {
             binO += ((binA[i] + binB[i]) % 2)
         }
         val decO = bin2dec(binO)
@@ -284,7 +284,7 @@ class BaseUtils {
         val nb = div(blocka_in.length, 4)
         var out = ""
 
-        for (i in 0..nb) {
+        for (i in 0..nb-1) {
             val tmpA = blocka_in.substring(blocka_in.indexOf(blocka_in[4*i]), blocka_in.indexOf(blocka_in[4*i]) + 4)
             val tmpB = blockb_in.substring(blockb_in.indexOf(blockb_in[4*i]), blockb_in.indexOf(blockb_in[4*i]) + 4)
             out += subblocks_xor(tmpA, tmpB)
