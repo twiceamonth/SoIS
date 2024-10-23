@@ -110,22 +110,20 @@ class SPNet {
         val s = array_in.size
         val b = shift_in % s
 
-        val out = mutableListOf<Int>()
+        val out = MutableList(20, {0})
         if(b > 0) {
-            // поменял местами циклы чтобы просто +=, надеюсь проблем изза этого не будет
-            for (i in 0..<b) {
-                out += array_in[s-b+i]
+            for (i in b..<s) {
+                out[i] = array_in[i-b]
             }
-            for (i in b..s) {
-                out += array_in[i-b]
+            for (i in 0..<b) {
+                out[i] = array_in[s-b+i]
             }
         } else {
-            // поменял местами циклы чтобы просто +=, надеюсь проблем изза этого не будет
-            for (i in s+b..s) {
-                out += array_in[i-s-b]
+            for (i in 0..<s+b) {
+                out[i] = array_in[i-b]
             }
-            for (i in 0..s+b) {
-                out += array_in[i-b]
+            for (i in s+b..<s) {
+                out[i] = array_in[i-s-b]
             }
         }
         return out
