@@ -285,8 +285,8 @@ class BaseUtils {
         var out = ""
 
         for (i in 0..nb-1) {
-            val tmpA = blocka_in.substring(blocka_in.indexOf(blocka_in[4*i]), blocka_in.indexOf(blocka_in[4*i]) + 4)
-            val tmpB = blockb_in.substring(blockb_in.indexOf(blockb_in[4*i]), blockb_in.indexOf(blockb_in[4*i]) + 4)
+            val tmpA = blocka_in.substring(4*i, 4*i + 4)
+            val tmpB = blockb_in.substring(4*i, 4*i + 4)
             out += subblocks_xor(tmpA, tmpB)
         }
 

@@ -77,6 +77,9 @@ class BaseUtilsTest {
     fun testAddTxt() {
         assertEquals("ИЖЬЯМАНЕ", utils.addTxt("ЕЖИК", "В_ТУМАНЕ"))
         assertEquals("БАРОН", utils.addTxt("Я__Н_", "ВАРАН"))
+        assertEquals("УДДУ", utils.addTxt("АГАТ","ТАГА"))
+        assertEquals("_БУТВЗФЧЛМЕГБЭРБ", utils.addTxt("ТОРТ_ХОЧЕТ_ГОРКУ","МТВ_ВСЕ_ЕЩЕ_ТЛЕН"))
+
     }
 
     @Test
@@ -158,8 +161,16 @@ class BaseUtilsTest {
     @Test
     fun testSubblocks_xor() {
         assertEquals("СДДС", utils.subblocks_xor("АГАТ","ТАГА"))
-        assertEquals("ЕЬОЕЭПМО", utils.bloc_xor("КОЛЕНЬКА","МТВ_ТЛЕН"))
     }
+    @Test
+    fun testBlock_xor() {
+        assertEquals("СДДС", utils.bloc_xor("АГАТ","ТАГА"))
+        assertEquals("ЕЬОЕЭПМО", utils.bloc_xor("КОЛЕНЬКА","МТВ_ТЛЕН"))
+        assertEquals("ЮЬСТВГИЧ_ИЕГЬЭМЩ", utils.bloc_xor("ТОРТ_ХОЧЕТ_ГОРКУ","МТВ_ВСЕ_ЕЩЕ_ТЛЕН"))
+        assertEquals("ТОРТ_ХОЧЕТ_ГОРКУ", utils.bloc_xor("ЮЬСТВГИЧ_ИЕГЬЭМЩ","МТВ_ВСЕ_ЕЩЕ_ТЛЕН"))
+        assertEquals("МТВ_ВСЕ_ЕЩЕ_ТЛЕН", utils.bloc_xor("ЮЬСТВГИЧ_ИЕГЬЭМЩ","ТОРТ_ХОЧЕТ_ГОРКУ"))
+    }
+
 
 
 }
