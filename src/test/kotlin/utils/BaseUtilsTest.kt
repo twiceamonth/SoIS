@@ -170,7 +170,13 @@ class BaseUtilsTest {
         assertEquals("ТОРТ_ХОЧЕТ_ГОРКУ", utils.bloc_xor("ЮЬСТВГИЧ_ИЕГЬЭМЩ","МТВ_ВСЕ_ЕЩЕ_ТЛЕН"))
         assertEquals("МТВ_ВСЕ_ЕЩЕ_ТЛЕН", utils.bloc_xor("ЮЬСТВГИЧ_ИЕГЬЭМЩ","ТОРТ_ХОЧЕТ_ГОРКУ"))
     }
-
+    @Test
+    fun testProduce_round_keys(){
+        var key = "ПОЛИМАТ_ТЕХНОБОГ"
+        var expected = mutableListOf<String>("","","","","")
+        val out = utils.produce_round_keys("ПОЛИМАТ_ТЕХНОБОГ",5)
+        assertEquals(expected,out)
+    }
 
 
 }

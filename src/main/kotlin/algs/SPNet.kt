@@ -28,7 +28,7 @@ class SPNet {
 
     // тк я в produce_round_keys инициализирую генератор, и изза того что у нас не по маткадовски, сид сразу тут подается
     fun frw_SPNet(block_in: String, key_in: String, r_in: Int, seed_in: String): String {
-        val key_set = utils.produce_round_keys(key_in, r_in, seed_in)
+        val key_set = utils.produce_round_keys(key_in, r_in)
         var block = block_in
         for (i in 0..<r_in) {
             block = frw_round_SP(block_in, key_set[i], i)
@@ -37,7 +37,7 @@ class SPNet {
     }
 
     fun inv_SPNet(block_in: String, key_in: String, r_in: Int, seed_in: String): String {
-        val key_set = utils.produce_round_keys(key_in, r_in, seed_in)
+        val key_set = utils.produce_round_keys(key_in, r_in)
         var block = block_in
         for (i in r_in-1 downTo 0) {
             block = inv_round_SP(block_in, key_set[i], i)

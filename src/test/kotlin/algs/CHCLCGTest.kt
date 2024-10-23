@@ -8,7 +8,7 @@ class CHCLCGTest {
     // тест для не модифицированного генератора
     /*@Test
     fun CHCLCGTestCase1(){
-        val seed = "АБВГДЕЖЗИЙКЛМНОП"
+        val seed = "ПОЛИМАТ_ТЕХНОБОГ"
         var set = mutableListOf<MutableList<Int>>(mutableListOf<Int>(723482,8677,983609),mutableListOf<Int>(252564,9109,961193),mutableListOf<Int>(357630,8971,948209))
 
         val chclcg = CHCLCG(seed,set)
@@ -31,7 +31,18 @@ class CHCLCGTest {
 
 
     }*/
-
+    @Test
+    fun testCHCLCG(){
+        var seed1="ААААББББВВВВГГГГ"
+        var set = mutableListOf<MutableList<Int>>(mutableListOf<Int>(723482,8677,983609),mutableListOf<Int>(252564,9109,961193),mutableListOf<Int>(357630,8971,948209))
+        val chclcg1 = CHCLCG(seed1,set)
+        assertEquals("ФЧПХ_КДВРДШБОРУТ",chclcg1.CHCLCG_next())
+        assertEquals("_ГТУЖУЬЙЮАИГУЦТА",chclcg1.CHCLCG_next())
+        assertEquals("ХАМЕЬЫМПЕИЦЗЦЛЙЦ",chclcg1.CHCLCG_next())
+        assertEquals("МВЬН_ПЦЬАЧИФЭХЦФ",chclcg1.CHCLCG_next())
+        assertEquals("ЛШЦИБАЭРАРПХХЩЬЯ",chclcg1.CHCLCG_next())
+        assertEquals("_ЩГДЦЫХЫЕЩБИЫБХЦ",chclcg1.CHCLCG_next())
+    }
     @Test
     fun CHCLCGTestCase2(){
         val seed1 = "ААААББББВВВВГГГГ"

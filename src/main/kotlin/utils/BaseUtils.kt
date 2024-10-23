@@ -302,14 +302,14 @@ class BaseUtils {
     }
 
     // я ббрал эти s_fun и rcg_fun, сид в общем будем извне сразу подавать
-    fun produce_round_keys(key_in: String, num_in: Int, seedfun: String): List<String> {
+    fun produce_round_keys(key_in: String, num_in: Int): List<String> {
         val set = make_lcg_set()
-        val rcg = CHCLCG(seedfun, set)
-        val out = mutableListOf<String>(rcg.CHCLCG_next())
+        val rcg = CHCLCG(key_in, set)
+        val out = mutableListOf<String>()
 
         if(num_in > 1) {
             for (i in 1..num_in) {
-                out += rcg.CHCLCG_next() // тут как сид -1 в методичке ват?
+                out += rcg.CHCLCG_next()
             }
         }
 
