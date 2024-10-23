@@ -155,4 +155,11 @@ class BaseUtilsTest {
     }
 
 
+    @Test
+    fun testSubblocks_xor() {
+        assertEquals("СДДС", utils.subblocks_xor("АГАТ","ТАГА"))
+        assertEquals("ЕЬОЕЭПМО", utils.bloc_xor("КОЛЕНЬКА","МТВ_ТЛЕН"))
+    }
+
+
 }
