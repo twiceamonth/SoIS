@@ -26,7 +26,6 @@ class SPNet {
         ),
     )
 
-    // тк я в produce_round_keys инициализирую генератор, и изза того что у нас не по маткадовски, сид сразу тут подается
     fun frw_SPNet(block_in: String, key_in: String, r_in: Int ): String {
         val key_set = utils.produce_round_keys(key_in, r_in)
         var block = block_in
@@ -110,7 +109,7 @@ class SPNet {
         val s = array_in.size
         val b = shift_in % s
 
-        val out = MutableList(20, {0})
+        val out = MutableList(array_in.size, {0})
         if(b > 0) {
             for (i in b..<s) {
                 out[i] = array_in[i-b]
@@ -130,12 +129,12 @@ class SPNet {
     }
 
     fun LB2B(block_in: String): List<Int> {
-        val out = mutableListOf<Int>()
+        val out = MutableList(80, {0})
         for (q in 0..3) {
             val t = block_in.substring(q*4, q*4 + 4)
             val tmp = utils.dec2bin(utils.block2num(t))
             for (i in 0..19) {
-                out += tmp[i]
+                out[i+q*20] = tmp[i]
             }
         }
         return out
@@ -144,9 +143,9 @@ class SPNet {
     fun B2LB(block_in: List<Int>): String {
         var out = ""
         for (q in 0..3) {
-            val tmp = mutableListOf<Int>()
+            val tmp = MutableList(80, {0})
             for (i in 0..19) {
-                tmp.add(i, block_in[i+q*20])
+                tmp[i] = block_in[i+q*20]
             }
             val t = utils.num2block(utils.bin2dec(tmp))
             out += t
