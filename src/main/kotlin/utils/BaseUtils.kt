@@ -271,9 +271,9 @@ class BaseUtils {
         val binA = dec2bin(decA)
         val binB = dec2bin(decB)
 
-        val binO = mutableListOf<Int>()
+        val binO = MutableList(binA.size, {0})
         for (i in 0..binA.size-1) {
-            binO += ((binA[i] + binB[i]) % 2)
+            binO[i] = ((binA[i] + binB[i]) % 2)
         }
         val decO = bin2dec(binO)
 

@@ -5,6 +5,7 @@ import org.example.utils.BaseUtils
 class SPNet {
     private val utils = BaseUtils()
     private val cesar = Cesar(utils)
+    private val sBlock = SBlockImpl(utils, cesar)
     val M = listOf(
         listOf(
             listOf(16,3,2,13),
@@ -48,10 +49,11 @@ class SPNet {
         var inter = ""
         for (i in 0..3) {
             val T = block_in.substring(i*4, i*4 + 4)
-            inter += cesar.frw_poly_Cesar(T, key_in, i*4)
+            inter += sBlock.frw_S(T, key_in, i*4)
         }
         val tmp = frw_P_round(inter, r_in)
-        return utils.bloc_xor(tmp, key_in)
+        val out = utils.bloc_xor(tmp, key_in)
+        return out
     }
 
     fun inv_round_SP(block_in: String, key_in: String, r_in: Int): String {
@@ -60,7 +62,7 @@ class SPNet {
         val inter = inv_P_round(tmp, r_in)
         for (i in 0..3) {
             val T = inter.substring(i*4, i*4 + 4)
-            out += cesar.inv_poly_Cesar(T, key_in, i*4)
+            out += sBlock.inv_S(T, key_in, i*4)
         }
         return out
     }

@@ -26,12 +26,12 @@ class SPNetTest {
         var input = "ТЧЗЕАЦЧКХЬЕХВГЗУ"
         val key   = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
 
-        var res = spnet.frw_SPNet(input,key,8)
+        var res = spnet.inv_SPNet(input,key,8)
         assertEquals("КОРЫСТЬ_СЛОНА_ЭХ",res)
 
         input = "ЮГЛФЙГСЦПДЗЕЕМЕТ"
 
-        res = spnet.frw_SPNet(input,key,8)
+        res = spnet.inv_SPNet(input,key,8)
         assertEquals("ЛЕРА_КЛОНКА_КОНЯ",res)
     }
 
@@ -111,24 +111,24 @@ class SPNetTest {
     fun testFrw_round_SP(){
         val input1 = "КОРЫСТЬ_СЛОНА_ЭХ"
         val input2 = "КОРЫСТЬ_СЛОН__ЭХ"
-        val key   = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
+        val key    = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
 
         val out1 = spnet.frw_round_SP(input1,key,0)
         val out2 = spnet.frw_round_SP(input2,key,0)
         assertEquals("ЯЭЙООРКНЮУДЩЬЫРК", out1)
-        assertEquals("ЯЭЙОЖРКНЮУДЩЬЫЗК", out1)
+        assertEquals("ЯЭЙОЖРКНЮУДЩЬЫЗТ", out2)
 
     }
     @Test
     fun testInv_round_SP(){
         val input1 = "ЯЭЙООРКНЮУДЩЬЫРК"
-        val input2 = "ЯЭЙОЖРКНЮУДЩЬЫЗК"
-        val key   = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
+        val input2 = "ЯЭЙОЖРКНЮУДЩЬЫЗТ"
+        val key    = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
 
         val out1 = spnet.inv_round_SP(input1,key,0)
         val out2 = spnet.inv_round_SP(input2,key,0)
         assertEquals("КОРЫСТЬ_СЛОНА_ЭХ", out1)
-        assertEquals("КОРЫСТЬ_СЛОН__ЭХ", out1)
+        assertEquals("КОРЫСТЬ_СЛОН__ЭХ", out2)
 
     }
 }
