@@ -106,4 +106,29 @@ class SPNetTest {
         assertEquals(input2,spnet.inv_P_round("ВМГНОАИЖЕЛДКЙЗПБ",2))
         assertEquals(input2,spnet.inv_P_round("АЫРБК_КШТЙБПЧСШЛ",4))
     }
+
+    @Test
+    fun testFrw_round_SP(){
+        val input1 = "КОРЫСТЬ_СЛОНА_ЭХ"
+        val input2 = "КОРЫСТЬ_СЛОН__ЭХ"
+        val key   = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
+
+        val out1 = spnet.frw_round_SP(input1,key,0)
+        val out2 = spnet.frw_round_SP(input2,key,0)
+        assertEquals("ЯЭЙООРКНЮУДЩЬЫРК", out1)
+        assertEquals("ЯЭЙОЖРКНЮУДЩЬЫЗК", out1)
+
+    }
+    @Test
+    fun testInv_round_SP(){
+        val input1 = "ЯЭЙООРКНЮУДЩЬЫРК"
+        val input2 = "ЯЭЙОЖРКНЮУДЩЬЫЗК"
+        val key   = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
+
+        val out1 = spnet.inv_round_SP(input1,key,0)
+        val out2 = spnet.inv_round_SP(input2,key,0)
+        assertEquals("КОРЫСТЬ_СЛОНА_ЭХ", out1)
+        assertEquals("КОРЫСТЬ_СЛОН__ЭХ", out1)
+
+    }
 }
