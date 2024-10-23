@@ -31,7 +31,7 @@ class SPNet {
         val key_set = utils.produce_round_keys(key_in, r_in)
         var block = block_in
         for (i in 0..<r_in) {
-            block = frw_round_SP(block_in, key_set[i], i)
+            block = frw_round_SP(block, key_set[i], i)
         }
         return block
     }
@@ -40,7 +40,7 @@ class SPNet {
         val key_set = utils.produce_round_keys(key_in, r_in)
         var block = block_in
         for (i in r_in-1 downTo 0) {
-            block = inv_round_SP(block_in, key_set[i], i)
+            block = inv_round_SP(block, key_set[i], i)
         }
         return block
     }
