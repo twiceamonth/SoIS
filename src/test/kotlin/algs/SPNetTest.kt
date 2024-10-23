@@ -33,4 +33,28 @@ class SPNetTest {
         res = spnet.frw_SPNet(input,key,8)
         assertEquals("ЛЕРА_КЛОНКА_КОНЯ",res)
     }
+
+    @Test
+    fun testFrw_MagicSquare() {
+        val input = "АБВГДЕЖЗИЙКЛМНОП"
+        val out1 = spnet.frw_MagicSquare(input, spnet.M[0])
+        val out2 = spnet.frw_MagicSquare(input, spnet.M[1])
+        val out3 = spnet.frw_MagicSquare(input, spnet.M[2])
+
+        assertEquals("ПВБМДЙКЗИЕЖЛГОНА", out1)
+        assertEquals("ЖНГИЛАОЕМЗЙВБКДП", out2)
+        assertEquals("ГНОАИЖЕЛДКЙЗПБВМ", out3)
+    }
+
+    @Test
+    fun testInv_MagicSquare() {
+        val input = "АБВГДЕЖЗИЙКЛМНОП"
+        val out1 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[0]), spnet.M[0])
+        val out2 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[0]), spnet.M[1])
+        val out3 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[0]), spnet.M[2])
+
+        assertEquals("АБВГДЕЖЗИЙКЛМНОП", out1)
+        assertEquals("АБВГДЕЖЗИЙКЛМНОП", out2)
+        assertEquals("АБВГДЕЖЗИЙКЛМНОП", out3)
+    }
 }

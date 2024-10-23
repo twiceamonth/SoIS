@@ -5,7 +5,7 @@ import org.example.utils.BaseUtils
 class SPNet {
     private val utils = BaseUtils()
     private val cesar = Cesar(utils)
-    private val M = listOf(
+    val M = listOf(
         listOf(
             listOf(16,3,2,13),
             listOf(5,10,11,8),
@@ -16,7 +16,7 @@ class SPNet {
             listOf(7,14,4,9),
             listOf(12,1,15,6),
             listOf(13,8,10,3),
-            listOf(2,1,5,16)
+            listOf(2,11,5,16)
         ),
         listOf(
             listOf(4,14,15,1),
@@ -45,7 +45,7 @@ class SPNet {
         return block
     }
 
-    private fun frw_round_SP(block_in: String, key_in: String, r_in: Int): String {
+    fun frw_round_SP(block_in: String, key_in: String, r_in: Int): String {
         var inter = ""
         for (i in 0..3) {
             val T = block_in.substring(i*4, i*4 + 4)
@@ -55,7 +55,7 @@ class SPNet {
         return utils.bloc_xor(tmp, key_in)
     }
 
-    private fun inv_round_SP(block_in: String, key_in: String, r_in: Int): String {
+    fun inv_round_SP(block_in: String, key_in: String, r_in: Int): String {
         var out = ""
         val tmp = utils.bloc_xor(block_in, key_in)
         val inter = inv_P_round(tmp, r_in)
@@ -66,7 +66,7 @@ class SPNet {
         return out
     }
 
-    private fun frw_P_round(block_in: String, r_in: Int): String {
+    fun frw_P_round(block_in: String, r_in: Int): String {
         val r = r_in % 3
         val j = 4 * (r_in % 4) + 2
         val tmp = frw_MagicSquare(block_in, M[r])
@@ -74,14 +74,14 @@ class SPNet {
         return B2LB(T)
     }
 
-    private fun inv_P_round(block_in: String, r_in: Int): String {
+    fun inv_P_round(block_in: String, r_in: Int): String {
         val r = r_in % 3
         val j = -(4 * (r_in % 4) + 2)
         val T = binary_shift(LB2B(block_in), j)
-        return inv_frw_MagicSquare(B2LB(T), M[r])
+        return inv_MagicSquare(B2LB(T), M[r])
     }
 
-    private fun frw_MagicSquare(block_in: String, mat_in: List<List<Int>>): String {
+    fun frw_MagicSquare(block_in: String, mat_in: List<List<Int>>): String {
         val d = block_in
         val m = mat_in
         var out = ""
@@ -94,7 +94,7 @@ class SPNet {
         return out
     }
 
-    private fun inv_frw_MagicSquare(block_in: String, mat_in: List<List<Int>>): String {
+    fun inv_MagicSquare(block_in: String, mat_in: List<List<Int>>): String {
         val d = utils.text2array(block_in)
         val m = mat_in
         val tmp = mutableListOf<Int>()
@@ -106,7 +106,7 @@ class SPNet {
         return utils.array2text(tmp)
     }
 
-    private fun binary_shift(array_in: List<Int>, shift_in: Int): List<Int> {
+    fun binary_shift(array_in: List<Int>, shift_in: Int): List<Int> {
         val s = array_in.size
         val b = shift_in % s
 
@@ -131,7 +131,7 @@ class SPNet {
         return out
     }
 
-    private fun LB2B(block_in: String): List<Int> {
+    fun LB2B(block_in: String): List<Int> {
         val out = mutableListOf<Int>()
         for (q in 0..3) {
             val t = block_in.substring(q*4, q*4 + 4)
@@ -143,7 +143,7 @@ class SPNet {
         return out
     }
 
-    private fun B2LB(block_in: List<Int>): String {
+    fun B2LB(block_in: List<Int>): String {
         var out = ""
         for (q in 0..3) {
             val tmp = mutableListOf<Int>()
