@@ -57,7 +57,7 @@ class SBlockImpl(private val utils: BaseUtils, private val cesar: Cesar) : SBloc
         val T = mutableListOf<String>()
 
         for (i in 0..3) {
-            T += block_in.substring(block_in.indexOf(block_in[4*i]), block_in.indexOf(block_in[4*i]) + 4)
+            T += block_in.substring(4*i, 4*i + 4)
         }
 
         for (j in 0..2) {

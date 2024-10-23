@@ -173,8 +173,8 @@ class BaseUtilsTest {
     @Test
     fun testProduce_round_keys(){
         var key = "ПОЛИМАТ_ТЕХНОБОГ"
-        var expected = mutableListOf<String>("","","","","")
-        val out = utils.produce_round_keys("ПОЛИМАТ_ТЕХНОБОГ",5)
+        var expected = mutableListOf<String>("ЬКЬЬБШЙРЦРХЯЗЖНФ","ТОСЯЮЧ_Щ_ЧТОШКШК","ЮИЩБДХЛЯЦШЯОНХЫЮ","СЭЩВМЫЯЬЭЛРВПШЭВ","ЛТ_ХЕСЯХШБЧЗХИ_Х")
+        val out = utils.produce_round_keys(key,5)
         assertEquals(expected,out)
     }
 
