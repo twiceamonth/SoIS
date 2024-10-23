@@ -53,8 +53,8 @@ class SPNetTest {
         val out2 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[0]), spnet.M[1])
         val out3 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[0]), spnet.M[2])
 
-        assertEquals("АБВГДЕЖЗИЙКЛМНОП", out1)
-        assertEquals("АБВГДЕЖЗИЙКЛМНОП", out2)
-        assertEquals("АБВГДЕЖЗИЙКЛМНОП", out3)
+        assertEquals(input, out1)
+        assertEquals(input, out2)
+        assertEquals(input, out3)
     }
 }

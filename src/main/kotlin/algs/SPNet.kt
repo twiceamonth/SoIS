@@ -97,10 +97,10 @@ class SPNet {
     fun inv_MagicSquare(block_in: String, mat_in: List<List<Int>>): String {
         val d = utils.text2array(block_in)
         val m = mat_in
-        val tmp = mutableListOf<Int>()
+        val tmp = MutableList(16, {0})
         for (i in 0..3) {
             for (j in 0..3) {
-                tmp += d[4*i+j]
+                tmp[m[i][j]-1] = d[4*i+j]
             }
         }
         return utils.array2text(tmp)
