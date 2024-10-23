@@ -48,7 +48,7 @@ class SPNet {
     private fun frw_round_SP(block_in: String, key_in: String, r_in: Int): String {
         var inter = ""
         for (i in 0..3) {
-            val T = block_in.substring(block_in.indexOf(block_in[i*4]), block_in.indexOf(block_in[i*4]) + 4)
+            val T = block_in.substring(i*4, i*4 + 4)
             inter += cesar.frw_poly_Cesar(T, key_in, i*4)
         }
         val tmp = frw_P_round(inter, r_in)
@@ -60,7 +60,7 @@ class SPNet {
         val tmp = utils.bloc_xor(block_in, key_in)
         val inter = inv_P_round(tmp, r_in)
         for (i in 0..3) {
-            val T = inter.substring(inter.indexOf(inter[i*4]), inter.indexOf(inter[i*4]) + 4)
+            val T = inter.substring(i*4, i*4 + 4)
             out += cesar.inv_poly_Cesar(T, key_in, i*4)
         }
         return out
@@ -88,7 +88,7 @@ class SPNet {
 
         for(i in 0..3) {
             for (j in 0..3) {
-                out += d.substring(d.indexOf(d[m[i][j]-1]), d.indexOf(d[m[i][j]-1]) + 1)
+                out += d.substring(m[i][j]-1, m[i][j]-1 + 1)
             }
         }
         return out
@@ -120,6 +120,7 @@ class SPNet {
                 out += array_in[i-b]
             }
         } else {
+            // поменял местами циклы чтобы просто +=, надеюсь проблем изза этого не будет
             for (i in s+b..s) {
                 out += array_in[i-s-b]
             }
@@ -133,7 +134,7 @@ class SPNet {
     private fun LB2B(block_in: String): List<Int> {
         val out = mutableListOf<Int>()
         for (q in 0..3) {
-            val t = block_in.substring(block_in.indexOf(block_in[q*4]), block_in.indexOf(block_in[q*4]) + 4)
+            val t = block_in.substring(q*4, q*4 + 4)
             val tmp = utils.dec2bin(utils.block2num(t))
             for (i in 0..19) {
                 out += tmp[i]

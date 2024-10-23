@@ -107,7 +107,7 @@ class BaseUtils {
 
         while(jIn > t.length-4) t += t
 
-        val key = t.substring(t.indexOf(t[jIn]), t.indexOf(t[jIn]) + 4)
+        val key = t.substring(jIn, jIn + 4)
         val k = text2array(key)
         val b = text2array(blockIn).toMutableList()
         val q = (k[0]+k[1]+k[2]+k[3]) % 4
@@ -127,7 +127,7 @@ class BaseUtils {
 
         while(jIn > t.length-4) t += t
 
-        val key = t.substring(t.indexOf(t[jIn]), t.indexOf(t[jIn]) + 4)
+        val key = t.substring(jIn, jIn + 4)
         val k = text2array(key)
         val b = text2array(blockIn).toMutableList()
         val q = (k[0]+k[1]+k[2]+k[3]) % 4
