@@ -50,8 +50,8 @@ class SPNetTest {
     fun testInv_MagicSquare() {
         val input = "АБВГДЕЖЗИЙКЛМНОП"
         val out1 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[0]), spnet.M[0])
-        val out2 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[0]), spnet.M[1])
-        val out3 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[0]), spnet.M[2])
+        val out2 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[1]), spnet.M[1])
+        val out3 = spnet.inv_MagicSquare(spnet.frw_MagicSquare(input, spnet.M[2]), spnet.M[2])
 
         assertEquals(input, out1)
         assertEquals(input, out2)
