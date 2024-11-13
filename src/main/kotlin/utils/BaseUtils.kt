@@ -386,4 +386,104 @@ class BaseUtils {
         }
         return out
     }
+
+    fun submatrix(matrix: List<Int>, startRow: Int, endRow: Int, startCol: Int, endCol: Int): List<Int> {
+        // Предполагаем, что матрица квадратная, и вычисляем размер
+        val size = kotlin.math.sqrt(matrix.size.toDouble()).toInt()
+
+        val subMatrix = mutableListOf<Int>()
+
+        // Извлечение элементов подматрицы по диапазонам строк и столбцов
+        for (i in startRow..endRow) {
+            for (j in startCol..endCol) {
+                subMatrix.add(matrix[i * size + j])
+            }
+        }
+
+        return subMatrix
+    }
+
+    fun check_padding(BINMASG_IN: List<Int>): List<Any> {
+        val BINS = BINMASG_IN
+        val M = BINS.size
+        val blocks = div(M, 80)
+        val reminder = M % 80
+        var f = 0
+        var numblocks = 0
+        var padlegth = 0
+        if(reminder == 0) {
+            val tb = submatrix(BINS, M-20,M-1, 0,0)
+            val ender = submatrix(tb, 17,19, 0,0)
+            if(ender == listOf(0, 0, 1)) {
+                val NB = submatrix(tb, 7,16, 0,0)
+                val PL = submatrix(tb, 0,6, 0 ,0)
+
+                for (i in 0..6) {
+                   padlegth = 2*padlegth + PL[i]
+                }
+
+                for (i in 0..9) {
+                    numblocks = 2*numblocks + NB[i]
+                }
+                if(numblocks == blocks && padlegth >= 23 && padlegth < 103) {
+                    val tb = submatrix(BINS, M-padlegth,M-21, 0,0)
+                    val starter = tb[0]
+                    if(starter == 1) {
+                        f = 1
+                        for (j in 1..padlegth-1) {
+                            val tmp = tb[j]
+                            if(tmp == 1) {
+                                f = 0
+                            }
+                            break // в методичке брейк тут, точно ли здесь он должен быть?
+                        }
+                    }
+                } else {
+                    f = 0
+                }
+            } else {
+                f = 0
+            }
+        } else {
+            f = 0
+        }
+        return listOf(f, listOf(numblocks, padlegth))
+    }
+
+    fun produce_padding(rem_in: Int, blocks_in: Int): List<Int> {
+        var r = 0
+        var b = 0
+        if(rem_in == 0) {
+            b = blocks_in+1
+            r = 80
+        }
+        else if(rem_in <= 57) {
+            r = 80 - rem_in
+            b = blocks_in+1
+        } else {
+            b = blocks_in + 2
+            r = 160 - rem_in
+        }
+        val pad = MutableList(r-21, {0})
+        pad[0] = 1
+
+        for (i in 1..r-21) { // можно вообще эттот цикл убрать
+            pad[i] = 0
+        }
+        var rt = r
+
+        for (i in 6 downTo 0) {
+            pad[r-20+i] = rt % 2
+            rt = div(rt, 2)
+        }
+        for (i in 9 downTo 0) {
+            pad[r-12+i] = b % 2
+            b = div(b,2)
+        }
+        pad[r-3] = 0
+        pad[r-2] = 0
+        pad[r-1] = 1
+        return pad
+    }
+
 }
