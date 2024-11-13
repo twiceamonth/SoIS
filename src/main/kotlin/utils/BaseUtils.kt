@@ -301,7 +301,6 @@ class BaseUtils {
         )
     }
 
-    // я ббрал эти s_fun и rcg_fun, сид в общем будем извне сразу подавать
     fun produce_round_keys(key_in: String, num_in: Int): List<String> {
         val set = make_lcg_set()
         val rcg = CHCLCG(key_in, set)
@@ -316,4 +315,75 @@ class BaseUtils {
         return out
     }
 
+
+    /*              lab 4               */
+
+    fun sym2bin(s_in: String): Int {
+        return s_in.toList().map { it.code }[0]
+    }
+
+    fun isSym(s_in: String): Boolean {
+        val C = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЬЭЮЯ_"
+
+        if(s_in in C) {
+            return true
+        }
+        return false
+    }
+
+    fun msg2bin(MSG_IN: String): List<Int> {
+        val M = MSG_IN.length
+        var  i = 0
+        var f = 0
+        val tmp = MutableList(MSG_IN.length, {0})
+        while (isSym(MSG_IN[i].toString())) {
+            val p = MSG_IN.substring(i, i + 1)
+            var c = sym2num(p)
+            for (j in 0..4) {
+                if(c % 2 == 0) {
+                    tmp[i*5+4-j] = 0
+                } else {
+                    tmp[i*5+4-j] = 1
+                }
+                c = div(c, 2)
+            }
+
+            if(i == M-1) {
+                f = 1
+                break
+            } else {
+                i++
+            }
+        }
+
+        if(f == 0) {
+            for (k in i..M-1) {
+                val p = MSG_IN.substring(k, k + 1)
+                tmp[4*i+k] = sym2bin(p)
+            }
+        }
+
+        return tmp
+    }
+
+    fun bin2msg(BIN_IN: List<Int>): String {
+        val B = BIN_IN.size
+        val b = div(B, 5)
+        val q = B % 5
+        var out = ""
+        for (i in 0..b-1) {
+            var t = 0
+            for (j in 0..4) {
+                t = 2*t + BIN_IN[i*5+j]
+            }
+            out += num2sym(t)
+        }
+
+        if(q > 0) {
+            for (k in 1..q) {
+                out += BIN_IN[b*5+k-1].toChar().toString()
+            }
+        }
+        return out
+    }
 }
