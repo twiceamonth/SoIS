@@ -1,6 +1,11 @@
 package org.example.utils
 
 import org.example.algs.CHCLCG
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
+import java.nio.charset.Charset
+import javax.crypto.MacSpi
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.truncate
@@ -388,4 +393,206 @@ class BaseUtils {
         }
         return out
     }
+
+    fun submatrix(matrix: List<Int>, startRow: Int, endRow: Int, startCol: Int, endCol: Int): List<Int> {
+        // Предполагаем, что матрица квадратная, и вычисляем размер
+        val size = kotlin.math.sqrt(matrix.size.toDouble()).toInt()
+
+        val subMatrix = mutableListOf<Int>()
+
+        // Извлечение элементов подматрицы по диапазонам строк и столбцов
+        for (i in startRow..endRow) {
+            for (j in startCol..endCol) {
+                subMatrix.add(matrix[i * size + j])
+            }
+        }
+
+        return subMatrix
+    }
+
+    fun check_padding(BINMASG_IN: List<Int>): List<Any> {
+        val BINS = BINMASG_IN
+        val M = BINS.size
+        val blocks = div(M, 80)
+        val reminder = M % 80
+        var f = 0
+        var numblocks = 0
+        var padlegth = 0
+        if(reminder == 0) {
+            val tb = submatrix(BINS, M-20,M-1, 0,0)
+            val ender = submatrix(tb, 17,19, 0,0)
+            if(ender == listOf(0, 0, 1)) {
+                val NB = submatrix(tb, 7,16, 0,0)
+                val PL = submatrix(tb, 0,6, 0 ,0)
+
+                for (i in 0..6) {
+                   padlegth = 2*padlegth + PL[i]
+                }
+
+                for (i in 0..9) {
+                    numblocks = 2*numblocks + NB[i]
+                }
+                if(numblocks == blocks && padlegth >= 23 && padlegth < 103) {
+                    val tb = submatrix(BINS, M-padlegth,M-21, 0,0)
+                    val starter = tb[0]
+                    if(starter == 1) {
+                        f = 1
+                        for (j in 1..padlegth-1) {
+                            val tmp = tb[j]
+                            if(tmp == 1) {
+                                f = 0
+                            }
+                            break // в методичке брейк тут, точно ли здесь он должен быть?
+                        }
+                    }
+                } else {
+                    f = 0
+                }
+            } else {
+                f = 0
+            }
+        } else {
+            f = 0
+        }
+        return listOf(f, listOf(numblocks, padlegth))
+    }
+
+    fun produce_padding(rem_in: Int, blocks_in: Int): List<Int> {
+        var r = 0
+        var b = 0
+        if(rem_in == 0) {
+            b = blocks_in+1
+            r = 80
+        }
+        else if(rem_in <= 57) {
+            r = 80 - rem_in
+            b = blocks_in+1
+        } else {
+            b = blocks_in + 2
+            r = 160 - rem_in
+        }
+        val pad = MutableList(r-21, {0})
+        pad[0] = 1
+
+        for (i in 1..r-21) { // можно вообще эттот цикл убрать
+            pad[i] = 0
+        }
+        var rt = r
+
+        for (i in 6 downTo 0) {
+            pad[r-20+i] = rt % 2
+            rt = div(rt, 2)
+        }
+        for (i in 9 downTo 0) {
+            pad[r-12+i] = b % 2
+            b = div(b,2)
+        }
+        pad[r-3] = 0
+        pad[r-2] = 0
+        pad[r-1] = 1
+        return pad
+    }
+
+    fun pad_message(MSG_IN: String): String {
+        var pad: List<Int> = mutableListOf()
+        val BINS = msg2bin(MSG_IN).toMutableList()
+        val M = BINS.size
+        val blocks = div(M, 80)
+        val reminder = M % 80
+        var f = 0
+        if(reminder == 0) {
+            f = check_padding(BINS)[0] as Int
+        } else {
+            f = 1
+        }
+
+        if(f ==1 ){
+            pad = produce_padding(reminder, blocks)
+            for (j in 0..pad.size-1) {
+                BINS[M+j] = pad[j]
+            }
+        }
+        return bin2msg(BINS)
+    }
+
+    // Первый метод считывает матрицу из файла и возвращает ее как List<List<Int>>
+    fun inputs_array(path: String): List<List<Int>> {
+        val file = File(path)
+        val reader = BufferedReader(FileReader(file, Charsets.UTF_8))
+        val matrix: MutableList<List<Int>> = mutableListOf()
+
+        reader.lines().forEach { line ->
+            // Преобразуем каждую строку файла в список целых чисел и добавляем в матрицу
+            val row = line.trim().split("\\s+".toRegex()).map { it.toInt() }
+            matrix.add(row)
+        }
+
+        return matrix
+    }
+
+    // Второй метод также считывает матрицу, но сразу возвращает её транспонированную версию
+    fun assocdata_array(path: String): List<List<Int>> {
+        val file = File(path)
+        val reader = BufferedReader(FileReader(file, Charsets.UTF_8))
+        val matrix: MutableList<List<Int>> = mutableListOf()
+
+        reader.lines().forEach { line ->
+            val row = line.trim().split("\\s+".toRegex()).map { it.toInt() }
+            matrix.add(row)
+        }
+
+        // Выполняем транспонирование
+        val rows = matrix.size
+        val cols = matrix[0].size
+        val transposed = MutableList(cols) { MutableList(rows) { 0 } }
+
+        for (i in 0 until rows) {
+            for (j in 0 until cols) {
+                transposed[j][i] = matrix[i][j]
+            }
+        }
+
+        return transposed
+    }
+
+    fun unpad_message(MSG_IN: String) : String {
+        val BINS = msg2bin(MSG_IN)
+        val M = BINS.size
+        val T = check_padding(BINS)
+        if (T[0] == 1) {
+            val pl = (T[1] as List<Int>)[1]
+            val tmp = submatrix(BINS, 0, M - pl- 1, 0, 0)
+            return bin2msg(tmp)
+        }
+        return MSG_IN
+    }
+
+    fun prepare_packet(DATA_IN: List<Int>, IV_IN: String, MSG_IN: String): List<Any> {
+        val data = DATA_IN.toMutableList()
+        val iv = addTxt("я хз сколько тут нижних подчеркиваний", IV_IN)
+        val msg = pad_message(MSG_IN)
+        var L = msg2bin(msg).size
+        var a = ""
+        for (i in 0..4) {
+            a += num2sym(L%32)
+            L = div(L, 32)
+        }
+        data[4] = a // не понял
+        val mac = ""
+        return listOf(
+            data,
+            iv,
+            msg,
+            mac
+        )
+    }
+
+    fun validate_packet(packet_in: List<Any>) {
+        val data = packet_in[0]
+        val iv = packet_in[1]
+        val msg = packet_in[2]
+        val mac = packet_in[3]
+
+    }
+
 }
