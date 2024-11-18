@@ -201,6 +201,15 @@ class BaseUtilsTest {
         assertEquals(utils.msg2bin(res2), utils.msg2bin(txt2))
 
     }
+    @Test
+    fun testPudding(){
+        val msg_in = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМ1110011011011"
+
+        var test_paded = utils.pad_message(msg_in)
+        var test_unpaded = utils.unpad_message(test_paded)
+        val expected = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМЬЫ011"
+        assertEquals(expected, test_unpaded)
+    }
 
 
 }

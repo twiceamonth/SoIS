@@ -394,20 +394,20 @@ class BaseUtils {
         return out
     }
 
-    fun submatrix(matrix: List<Int>, startRow: Int, endRow: Int, startCol: Int, endCol: Int): List<Int> {
-        // Предполагаем, что матрица квадратная, и вычисляем размер
-        val size = kotlin.math.sqrt(matrix.size.toDouble()).toInt()
+    fun submatrix(matrix: List<Int>, startRow: Int, endRow: Int): List<Int> {
+//        val size = kotlin.math.sqrt(matrix.size.toDouble()).toInt()
+//
+//        val subMatrix = mutableListOf<Int>()
+//
+//        for (i in startRow..endRow) {
+//            for (j in startCol..endCol) {
+//                subMatrix.add(matrix[i * size + j])
+//            }
+//        }
+//
+//        return subMatrix
 
-        val subMatrix = mutableListOf<Int>()
-
-        // Извлечение элементов подматрицы по диапазонам строк и столбцов
-        for (i in startRow..endRow) {
-            for (j in startCol..endCol) {
-                subMatrix.add(matrix[i * size + j])
-            }
-        }
-
-        return subMatrix
+        return matrix.slice(startRow..endRow)
     }
 
     fun check_padding(BINMASG_IN: List<Int>): List<Any> {
@@ -419,30 +419,31 @@ class BaseUtils {
         var numblocks = 0
         var padlegth = 0
         if(reminder == 0) {
-            val tb = submatrix(BINS, M-20,M-1, 0,0)
-            val ender = submatrix(tb, 17,19, 0,0)
+            val tb = submatrix(BINS, M-20,M-1)
+            val ender = submatrix(tb, 17,19)
             if(ender == listOf(0, 0, 1)) {
-                val NB = submatrix(tb, 7,16, 0,0)
-                val PL = submatrix(tb, 0,6, 0 ,0)
+                val NB = submatrix(tb, 8,16)
+                val PL = submatrix(tb, 0,7)
 
-                for (i in 0..6) {
+                for (i in 0..7) {
                    padlegth = 2*padlegth + PL[i]
                 }
 
-                for (i in 0..9) {
+                for (i in 0..8) {
                     numblocks = 2*numblocks + NB[i]
                 }
                 if(numblocks == blocks && padlegth >= 23 && padlegth < 103) {
-                    val tb = submatrix(BINS, M-padlegth,M-21, 0,0)
+                    val tb = submatrix(BINS, M-padlegth,M-21)
                     val starter = tb[0]
                     if(starter == 1) {
                         f = 1
-                        for (j in 1..padlegth-1) {
+                        for (j in 1..padlegth-21) {
                             val tmp = tb[j]
                             if(tmp == 1) {
                                 f = 0
+                                break
+
                             }
-                            break // в методичке брейк тут, точно ли здесь он должен быть?
                         }
                     }
                 } else {
@@ -471,31 +472,28 @@ class BaseUtils {
             b = blocks_in + 2
             r = 160 - rem_in
         }
-        val pad = MutableList(r-21, {0})
+        val pad = MutableList(r, {0})
         pad[0] = 1
 
-        for (i in 1..r-21) { // можно вообще эттот цикл убрать
-            pad[i] = 0
-        }
+
         var rt = r
 
-        for (i in 6 downTo 0) {
+
+        for (i in 7  downTo 0) {
             pad[r-20+i] = rt % 2
             rt = div(rt, 2)
         }
-        for (i in 9 downTo 0) {
+        for (i in 8 downTo 0) {
             pad[r-12+i] = b % 2
             b = div(b,2)
         }
-        pad[r-3] = 0
-        pad[r-2] = 0
         pad[r-1] = 1
         return pad
     }
 
     fun pad_message(MSG_IN: String): String {
         var pad: List<Int> = mutableListOf()
-        val BINS = msg2bin(MSG_IN).toMutableList()
+        var BINS = msg2bin(MSG_IN).toMutableList()
         val M = BINS.size
         val blocks = div(M, 80)
         val reminder = M % 80
@@ -503,14 +501,12 @@ class BaseUtils {
         if(reminder == 0) {
             f = check_padding(BINS)[0] as Int
         } else {
-            f = 1
+            f = 0
         }
 
-        if(f ==1 ){
+        if(f ==0 ){
             pad = produce_padding(reminder, blocks)
-            for (j in 0..pad.size-1) {
-                BINS[M+j] = pad[j]
-            }
+            BINS = (BINS + pad).toMutableList()
         }
         return bin2msg(BINS)
     }
@@ -561,7 +557,7 @@ class BaseUtils {
         val T = check_padding(BINS)
         if (T[0] == 1) {
             val pl = (T[1] as List<Int>)[1]
-            val tmp = submatrix(BINS, 0, M - pl- 1, 0, 0)
+            val tmp = submatrix(BINS, 0, M - pl- 1)
             return bin2msg(tmp)
         }
         return MSG_IN
@@ -577,7 +573,7 @@ class BaseUtils {
             a += num2sym(L%32)
             L = div(L, 32)
         }
-        data[4] = a // не понял
+        data[4] = a.toInt() // не понял
         val mac = ""
         return listOf(
             data,
