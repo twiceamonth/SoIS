@@ -1,9 +1,12 @@
 
+import org.example.algs.CHCLCG
 import org.example.algs.SPNet
 import org.example.utils.BaseUtils
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.random.Random
+import java.io.File
 
 class SPNetTest {
     var spnet = SPNet()
@@ -131,4 +134,99 @@ class SPNetTest {
         assertEquals("КОРЫСТЬ_СЛОН__ЭХ", out2)
 
     }
+    @Test
+    fun GetGistoData(){
+
+
+        fun bitDifference(a: String, b: String): Int {
+            var in_a = spnet.LB2B(a)
+            var in_b = spnet.LB2B(b)
+            var difference = 0
+            for (i in 0..<in_a.size) {
+                if (in_a[i] != in_b[i]) {
+                    difference++
+                }
+            }
+            return difference
+        }
+        fun saveResultsToFile(fileName: String, bitDifferenceList: List<Int>) {
+            val file = File(fileName)
+            file.bufferedWriter().use { out ->
+                bitDifferenceList.forEach { bit_dif ->
+                    out.write("$bit_dif\n")  // Записываем результат в файл, добавляя новую строку
+                }
+            }
+        }
+
+
+        fun change_input_block(input: String):String{
+            var inp = spnet.LB2B(input).toMutableList()
+            var rnd_indx = Random.nextInt(0, 80)
+            inp[rnd_indx] = if (inp[rnd_indx] == 0) 1 else 0
+            return spnet.B2LB(inp.toList())
+        }
+        val key = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
+        var input_block:String
+        input_block = "САМЫЙ_ПРОСТОЙ_СИ"
+
+        val bitDifferences = mutableListOf<Int>()
+
+        repeat(2000) {
+            val res1 = spnet.frw_SPNet(input_block, key, 8)
+            input_block = change_input_block(input_block)  // Изменяем входной блок
+            val res2 = spnet.frw_SPNet(input_block, key, 8)
+            val bit_dif = bitDifference(res1, res2)  // Вычисляем разницу
+            bitDifferences.add(bit_dif)  // Сохраняем разницу в список
+        }
+
+        // Записываем результаты в файл "results.txt"
+        saveResultsToFile("data/results_2_round_8.txt", bitDifferences)
+    }
+    @Test
+    fun GetGistoData1(){
+
+
+
+        fun saveResultsToFile(fileName: String, bitDifferenceList: List<Int>) {
+            val file = File(fileName)
+            file.bufferedWriter().use { out ->
+                bitDifferenceList.forEach { bit_dif ->
+                    out.write("$bit_dif\n")  // Записываем результат в файл, добавляя новую строку
+                }
+            }
+        }
+
+
+        fun change_input_block(input: String):String{
+            var inp = spnet.LB2B(input).toMutableList()
+            var rnd_indx = 10
+            inp[rnd_indx] = if (inp[rnd_indx] == 0) 1 else 0
+            return spnet.B2LB(inp.toList())
+        }
+        val chclcg = CHCLCG("САМЫЙ_ПРОСТОЙ_СИ", utils.make_lcg_set())
+        val key = "МТВ_ВСЕ_ЕЩЕ_ТЛЕН"
+        var input_block:String
+
+        val bitDifferences = MutableList<Int>(80,{0})
+
+        repeat(2000) {
+            input_block = chclcg.CHCLCG_next()
+
+            val res1 = spnet.frw_SPNet(input_block, key, 1)
+            input_block = change_input_block(input_block)  // Изменяем входной блок
+            val res2 = spnet.frw_SPNet(input_block, key, 1)
+
+            val res_list1 = spnet.LB2B(res1)
+            val res_list2 = spnet.LB2B(res2)
+            for (i in 0..<res_list1.size){
+                if (res_list2[i] != res_list1[i]){
+                    bitDifferences[i]++
+                }
+            }
+        }
+
+        // Записываем результаты в файл "results.txt"
+        saveResultsToFile("data/round_1_second_results_1.txt", bitDifferences)
+    }
+
 }

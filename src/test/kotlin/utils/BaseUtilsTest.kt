@@ -178,5 +178,29 @@ class BaseUtilsTest {
         assertEquals(expected,out)
     }
 
+    @Test
+    fun testSym2bin(){
+        assertEquals("0".toByte().toInt(),utils.sym2bin("0"))
+        assertEquals(1,utils.sym2bin("1"))
+    }
+    @Test
+    fun testMsg2bin() {
+        val txt = "ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМ"
+
+        val txt1 = "ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМ00111"
+        val res1 = "ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМЖ"
+        val txt2 = "ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМ1110011011011"
+        val res2 = "ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМЬЫ011"
+
+
+        assertEquals(txt, utils.bin2msg(utils.msg2bin(txt)))
+        assertEquals(res1, utils.bin2msg(utils.msg2bin(txt1)))
+        assertEquals(utils.msg2bin(res1), utils.msg2bin(txt1))
+
+        assertEquals(res2, utils.bin2msg(utils.msg2bin(txt2)))
+        assertEquals(utils.msg2bin(res2), utils.msg2bin(txt2))
+
+    }
+
 
 }

@@ -311,6 +311,10 @@ class BaseUtils {
                 out += rcg.CHCLCG_next()
             }
         }
+        else{
+            out += rcg.CHCLCG_next()
+
+        }
 
         return out
     }
@@ -319,7 +323,7 @@ class BaseUtils {
     /*              lab 4               */
 
     fun sym2bin(s_in: String): Int {
-        return s_in.toList().map { it.code }[0]
+        return s_in.toList().map { it.code - 48 }[0]
     }
 
     fun isSym(s_in: String): Boolean {
@@ -330,25 +334,21 @@ class BaseUtils {
         }
         return false
     }
-
     fun msg2bin(MSG_IN: String): List<Int> {
         val M = MSG_IN.length
-        var  i = 0
+        var i = 0
         var f = 0
-        val tmp = MutableList(MSG_IN.length, {0})
-        while (isSym(MSG_IN[i].toString())) {
+        var tmp = MutableList(5 * MSG_IN.length) { 0 } // Инициализируем с длиной 5*M, чтобы избежать выхода за границы
+
+        while (i < M && isSym(MSG_IN[i].toString())) { // Проверяем границы строки
             val p = MSG_IN.substring(i, i + 1)
             var c = sym2num(p)
             for (j in 0..4) {
-                if(c % 2 == 0) {
-                    tmp[i*5+4-j] = 0
-                } else {
-                    tmp[i*5+4-j] = 1
-                }
-                c = div(c, 2)
+                tmp[i * 5 + 4 - j] = if (c % 2 == 0) 0 else 1
+                c /= 2
             }
 
-            if(i == M-1) {
+            if (i == M - 1) {
                 f = 1
                 break
             } else {
@@ -356,15 +356,17 @@ class BaseUtils {
             }
         }
 
-        if(f == 0) {
-            for (k in i..M-1) {
+        if (f == 0) {
+            for (k in i until M) {
                 val p = MSG_IN.substring(k, k + 1)
-                tmp[4*i+k] = sym2bin(p)
+                tmp[4 * i + k] = sym2bin(p)
             }
+            tmp = tmp.subList(0,4*i+M)
         }
 
         return tmp
     }
+
 
     fun bin2msg(BIN_IN: List<Int>): String {
         val B = BIN_IN.size
@@ -381,7 +383,7 @@ class BaseUtils {
 
         if(q > 0) {
             for (k in 1..q) {
-                out += BIN_IN[b*5+k-1].toChar().toString()
+                out += BIN_IN[b*5+k-1].toString()
             }
         }
         return out
