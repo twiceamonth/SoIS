@@ -501,10 +501,10 @@ class BaseUtils {
         if(reminder == 0) {
             f = check_padding(BINS)[0] as Int
         } else {
-            f = 0
+            f = 1
         }
 
-        if(f ==0 ){
+        if(f ==1 ){
             pad = produce_padding(reminder, blocks)
             BINS = (BINS + pad).toMutableList()
         }
