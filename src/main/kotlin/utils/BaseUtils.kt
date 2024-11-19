@@ -563,9 +563,9 @@ class BaseUtils {
         return MSG_IN
     }
 
-    fun prepare_packet(DATA_IN: List<Int>, IV_IN: String, MSG_IN: String): List<Any> {
+    fun prepare_packet(DATA_IN: List<String>, IV_IN: String, MSG_IN: String): List<Any> {
         val data = DATA_IN.toMutableList()
-        val iv = addTxt("я хз сколько тут нижних подчеркиваний", IV_IN)
+        val iv = addTxt("________________", IV_IN)
         val msg = pad_message(MSG_IN)
         var L = msg2bin(msg).size
         var a = ""
@@ -573,7 +573,7 @@ class BaseUtils {
             a += num2sym(L%32)
             L = div(L, 32)
         }
-        data[4] = a.toInt() // не понял
+        data[4] = a// не понял
         val mac = ""
         return listOf(
             data,

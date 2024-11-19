@@ -202,12 +202,32 @@ class BaseUtilsTest {
 
     }
     @Test
-    fun testPudding(){
-        val msg_in = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМ1110011011011"
+    fun testPaddingWithBase(){
+        val msg_in = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_"
+        val expected = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_"
 
         var test_paded = utils.pad_message(msg_in)
         var test_unpaded = utils.unpad_message(test_paded)
+        assertEquals(expected, test_unpaded)
+    }
+    @Test
+    fun testPaddingWithBin(){
+        val msg_in = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМ1110011011011"
         val expected = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМЬЫ011"
+
+        var test_paded = utils.pad_message(msg_in)
+        var test_unpaded = utils.unpad_message(test_paded)
+        assertEquals(expected, test_unpaded)
+    }
+    @Test
+    fun testPaddingWithExistingPad(){
+        val msg_in = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМ1110011011011"
+        val expected = "_ЛОСОСЕМ_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ТЧК_ГНОЛЛЫ_ПИЛИЛИ_ПЫЛЕСОС_ЛОСОСЕМЬЫН_____ДЬАИ"
+
+        var test_paded = utils.pad_message(msg_in)
+        test_paded = utils.pad_message(test_paded)
+
+        var test_unpaded = utils.unpad_message(test_paded)
         assertEquals(expected, test_unpaded)
     }
 
