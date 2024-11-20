@@ -576,19 +576,93 @@ class BaseUtils {
         data[4] = a// не понял
         val mac = ""
         return listOf(
-            data,
+            data.toList(),
             iv,
             msg,
             mac
         )
     }
 
-    fun validate_packet(packet_in: List<Any>) {
-        val data = packet_in[0]
-        val iv = packet_in[1]
-        val msg = packet_in[2]
-        val mac = packet_in[3]
+    fun validate_packet(packet_in: List<Any>): Boolean {
+        val data = packet_in[0] as List<String>
+        val iv = packet_in[1] as String
+        val msg = packet_in[2] as String
+        val mac = packet_in[3] as String
 
+        val t = data[0].substring(0, 1)
+        val s = data[0].substring(1, 1)
+        val ml = mac.length
+
+        if(t != "В") return false
+        if((s=="А" || s == "В") && (ml != 16)) return false
+        if(s=="_" && ml != 0) return false
+
+        return true
     }
 
+    fun transmit(packet_in: List<Any>): List<Int> {
+        val data = packet_in[0] as List<String>
+        val iv = packet_in[1] as String
+        val msg = packet_in[2] as String
+        val mac = packet_in[3] as String
+
+        return msg2bin(
+            data[0] + data[1] + data[2] + data[3] + data[4] + iv + msg + mac
+        )
+    }
+
+    fun recieve(stream_in: List<Int>): List<Any> {
+        val p = bin2msg(stream_in)
+        val M = p.length
+
+        val type = p.substring(0, 2)
+        val sender = p.substring(2, 10)
+        val reciever = p.substring(10, 18)
+        val session = p.substring(18, 27)
+        val length = p.substring(27, 32)
+        val iv = p.substring(32, 48)
+
+        var L = 0
+
+        for (i in 0..4) {
+            val t = length.substring(i, i + 1)
+            val l = sym2num(t)
+            L = 32 * L + l
+        }
+
+        L = div(L, 5)
+
+        val message = p.substring(48, 48 + L)
+        val mac = p.substring(48+L, (48+L) + (M - (48+L)))
+
+        return listOf(
+            listOf(type, sender, reciever, session, length),
+            iv,
+            message,
+            mac
+        )
+    }
+
+
+    fun textxor(a_in: String, b_in: String): String {
+        var out = ""
+
+        for (i in 0..3) {
+            val a = a_in.substring(i*4, i*4 + 4)
+            val b = b_in.substring(i*4, i*4 + 4)
+
+            val A = dec2bin(block2num(a))
+            val B = dec2bin(block2num(b))
+
+            val C = MutableList(a.length, {0})
+            for (j in 0..19) {
+                C[j] = (A[j] + B[j]) % 2
+            }
+
+            val c = bin2dec(C)
+            out += num2block(c)
+        }
+
+        return out
+    }
 }
