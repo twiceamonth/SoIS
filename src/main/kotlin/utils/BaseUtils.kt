@@ -512,14 +512,14 @@ class BaseUtils {
     }
 
     // Первый метод считывает матрицу из файла и возвращает ее как List<List<Int>>
-    fun inputs_array(path: String): List<List<Int>> {
+    fun inputs_array(path: String): List<String> {
         val file = File(path)
         val reader = BufferedReader(FileReader(file, Charsets.UTF_8))
-        val matrix: MutableList<List<Int>> = mutableListOf()
+        val matrix: MutableList<String> = mutableListOf()
 
         reader.lines().forEach { line ->
             // Преобразуем каждую строку файла в список целых чисел и добавляем в матрицу
-            val row = line.trim().split("\\s+".toRegex()).map { it.toInt() }
+            val row = line
             matrix.add(row)
         }
 
@@ -527,28 +527,28 @@ class BaseUtils {
     }
 
     // Второй метод также считывает матрицу, но сразу возвращает её транспонированную версию
-    fun assocdata_array(path: String): List<List<Int>> {
+   fun assocdata_array(path: String): List<List<String>> {
         val file = File(path)
         val reader = BufferedReader(FileReader(file, Charsets.UTF_8))
-        val matrix: MutableList<List<Int>> = mutableListOf()
+        val matrix: MutableList<List<String>> = mutableListOf()
 
         reader.lines().forEach { line ->
-            val row = line.trim().split("\\s+".toRegex()).map { it.toInt() }
-            matrix.add(row)
+            val row = line.split(" ")
+            matrix+=row
         }
 
-        // Выполняем транспонирование
-        val rows = matrix.size
-        val cols = matrix[0].size
-        val transposed = MutableList(cols) { MutableList(rows) { 0 } }
+//        // Выполняем транспонирование
+//        val rows = matrix.size
+//        val cols = matrix.size
+//        val transposed = MutableList(cols) { MutableList(rows) { 0 } }
+//
+//        for (i in 0 until rows) {
+//            for (j in 0 until cols) {
+//                transposed[j][i] = matrix[i][j]
+//            }
+//        }
 
-        for (i in 0 until rows) {
-            for (j in 0 until cols) {
-                transposed[j][i] = matrix[i][j]
-            }
-        }
-
-        return transposed
+        return matrix
     }
 
     fun unpad_message(MSG_IN: String) : String {
@@ -573,7 +573,7 @@ class BaseUtils {
             a += num2sym(L%32)
             L = div(L, 32)
         }
-        data[4] = a// не понял
+        data+= a// понял
         val mac = ""
         return listOf(
             data.toList(),
@@ -654,7 +654,7 @@ class BaseUtils {
             val A = dec2bin(block2num(a))
             val B = dec2bin(block2num(b))
 
-            val C = MutableList(a.length, {0})
+            val C = MutableList(A.size, {0})
             for (j in 0..19) {
                 C[j] = (A[j] + B[j]) % 2
             }

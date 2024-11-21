@@ -231,5 +231,15 @@ class BaseUtilsTest {
         assertEquals(expected, test_unpaded)
     }
 
+    @Test
+    fun testTransmit(){
+        val assosdata = utils.assocdata_array("data/ad.txt")
+        val msg_in = utils.inputs_array("data/inp.txt")
+
+        val pack = utils.prepare_packet(assosdata[0],"КОЛЕСО",msg_in[0])
+
+        assertEquals(msg_in,utils.recieve(utils.transmit(pack))[2])
+    }
+
 
 }
