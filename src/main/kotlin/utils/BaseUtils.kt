@@ -570,10 +570,10 @@ class BaseUtils {
         var L = msg2bin(msg).size
         var a = ""
         for (i in 0..4) {
-            a += num2sym(L%32)
+            a+= num2sym(L%32)
             L = div(L, 32)
         }
-        data+= a// понял
+        data+= a.reversed()// понял
         val mac = ""
         return listOf(
             data.toList(),
@@ -606,9 +606,10 @@ class BaseUtils {
         val msg = packet_in[2] as String
         val mac = packet_in[3] as String
 
-        return msg2bin(
+        val out = msg2bin(
             data[0] + data[1] + data[2] + data[3] + data[4] + iv + msg + mac
         )
+        return out
     }
 
     fun recieve(stream_in: List<Int>): List<Any> {
