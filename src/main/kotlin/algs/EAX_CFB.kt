@@ -6,7 +6,6 @@ class EAX_CFB(
     ass_data: List<String>,
     key_in: String,
     nonce: String,
-    mtype: String
 ) {
     private val utils = BaseUtils()
     private val spNet = SPNet()
@@ -50,8 +49,9 @@ class EAX_CFB(
 
     fun EAX_CFB_send(
         msg_array: List<String>
-    ): List<Int> {
+    ): List<List<Int>> {
         var msg_conuter = 0
+        val out: MutableList<List<Int>> = mutableListOf()
 
         for (i in 0..<msg_array.size) {
             val msg_sec = mtype
@@ -62,18 +62,19 @@ class EAX_CFB(
                 IV, msg_array[i]
             )
 
-            if (msg_sec == "В_") return utils.transmit(tmp_packet)
-            if (msg_sec == "ВА") return utils.transmit(
-                EAX_CFB_frw(
-                    tmp_packet,
-                    data_mac,
-                    keyset[0] /*???????*/,
-                    secret,
-                    1,
-                    8
-                )
+            if (msg_sec == "В_") out.add(utils.transmit(tmp_packet))
+            if (msg_sec == "ВА")  out.add(utils.transmit(
+                    EAX_CFB_frw(
+                        tmp_packet,
+                        data_mac,
+                        keyset[0] /*???????*/,
+                        secret,
+                        1,
+                        8
+                    ))
+
             )
-            if (msg_sec == "ВБ") return utils.transmit(
+            if (msg_sec == "ВБ") out.add(utils.transmit(
                 EAX_CFB_frw(
                     tmp_packet,
                     data_mac,
@@ -81,53 +82,56 @@ class EAX_CFB(
                     secret,
                     0,
                     8
-                )
+                ))
             )
         }
-        return emptyList()
+        return out
     }
 
     fun EAX_CFB_reciev(
         msg_array: List<List<Int>>
-    ): List<Any> {
+    ): MutableList<List<Any>> {
         var last = -1
+        var out: MutableList<List<Any>> = mutableListOf()
         for (i in 0..<msg_array.size) {
             val tmp_packet = utils.recieve(msg_array[i])
             val rdata = tmp_packet[0] as List<String>
-            val current = utils.block2num((tmp_packet[3] as String)[i].toString().substring(12, 16))
+            val current = utils.block2num((tmp_packet[1] as String).substring(12, 16))
 
-            if (last > current) return emptyList()
+            if (last < current) {
 
-            if (rdata[0] == "ВБ") {
-                val rec_packet = EAX_CFB_inv(tmp_packet, "ТУТ ЧЕГОТО НЕ ХВАТАЕТ !", keyset[0], secret, 0, 8).toMutableList()
-                rec_packet[2] = utils.unpad_message(rec_packet[2] as String)
-                if (rec_packet[3] == "_____________") rec_packet[3] = "ОК"
-                return rec_packet
-            }
-
-            if (rdata[0] == "ВА" && mtype != "ВБ") {
-                val rec_packet = EAX_CFB_inv(tmp_packet, "ТУТ ЧЕГОТО НЕ ХВАТАЕТ !",keyset[0], secret, 1, 8).toMutableList()
-                rec_packet[2] = utils.unpad_message(rec_packet[2] as String)
-                if (rec_packet[3] == "_____________") {
-                    last = current
-                    rec_packet[3] = "ОК"
+                var rec_packet: List<Any> = emptyList()
+                if (rdata[0] == "ВБ") {
+                    rec_packet = EAX_CFB_inv(tmp_packet, keyset[0], secret, 0, 8).toMutableList()
+                    rec_packet[2] = utils.unpad_message(rec_packet[2] as String)
+                    if (rec_packet[3] == "_____________") rec_packet[3] = "ОК"
                 }
-                return rec_packet
-            }
 
-            if (rdata[0] == "В_" && mtype != "В_") {
-                val rec_packet = tmp_packet.toMutableList()
-                rec_packet[3] = utils.unpad_message(rec_packet[2] as String)
-                if (rec_packet[3] == "") {
-                    last = current
-                    rec_packet[3] = "N/A"
+                if (rdata[0] == "ВА" && mtype != "ВБ") {
+                    rec_packet = EAX_CFB_inv(tmp_packet, keyset[0], secret, 1, 8).toMutableList()
+                    rec_packet[2] = utils.unpad_message(rec_packet[2] as String)
+                    if (rec_packet[3] == "_____________") {
+                        last = current
+                        rec_packet[3] = "ОК"
+                    }
                 }
-                return rec_packet
-            }
 
-            return tmp_packet
+                if (rdata[0] == "В_" && mtype != "В_") {
+                    rec_packet = tmp_packet.toMutableList()
+                    rec_packet[3] = utils.unpad_message(rec_packet[2] as String)
+                    if (rec_packet[3] == "") {
+                        last = current
+                        rec_packet[3] = "N/A"
+                    }
+                }
+                if (rec_packet.isEmpty()) {
+                    rec_packet = tmp_packet
+                }
+
+                out.add(rec_packet)
+            }
         }
-        return emptyList()
+        return out
     }
 
 
@@ -243,7 +247,6 @@ class EAX_CFB(
 
     fun EAX_CFB_inv(
         packet_in: List<Any>,
-        cmac_in: String,
         key_in: String,
         sec_in: String,
         onlymac: Int,
@@ -257,7 +260,7 @@ class EAX_CFB(
         var tmp = ad_in[0] + ad_in[3] + ad_in[4]
         var data = ad_in[0] + ad_in[1] + ad_in[2] + ad_in[3] + "____"
 
-        val CMAC = frw_CFB(data, sec_in, key_in, -1, r_in)
+        val cmac_in = frw_CFB(data, sec_in, key_in, -1, r_in)
         val CIV = frw_CFB((sec_in + tmp), iv_in, key_in, -1, r_in)
 
         var MAC = ""
