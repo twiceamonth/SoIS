@@ -4,36 +4,44 @@ import org.example.utils.BaseUtils
 
 class EAX_CFB(
     ass_data: List<String>,
-    msg_array: List<String>,
     key_in: String,
-    cypher_rounds: Int,
     nonce: String,
-    val mtype: String
+    mtype: String
 ) {
     private val utils = BaseUtils()
     private val spNet = SPNet()
+
+    val mtype: String
+    val sender: String
+    val reciever: String
+    val transmition: String
 
     val keyset: List<String>
     val secret: String
     val data: String
     val data_mac: String
 
+    val IV0: String
+    val msg_counter: Int
+
     init {
-        val mtype = ass_data[0]
-        val sender = ass_data[1]
-        val reciever = ass_data[2]
-        val transmition = ass_data[3]
+        this.mtype = ass_data[0]
+        this.sender = ass_data[1]
+        this.reciever = ass_data[2]
+        this.transmition = ass_data[3]
         val t1 = reciever + sender
         val t2 = mtype + transmition + "_____"
         var t3 = ""
         val cad = utils.addTxt(t1, t2)
-        val IV0 = utils.addTxt(cad, nonce).substring(0, 12)
+
         if (reciever < sender) {
             t3 = t1
         } else {
             t3 = sender + reciever
         }
-        var msg_counter = -1
+
+        this.msg_counter = -1
+        this.IV0 = utils.addTxt(cad, nonce).substring(0, 12)
         this.keyset = utils.produce_round_keys(key_in, 8)
         this.secret = frw_CFB(t3 + t2, key_in, keyset[0] /* ??????????? */, -1, 8)
         this.data = mtype + secret + reciever + transmition + "_____"
@@ -41,17 +49,8 @@ class EAX_CFB(
     }
 
     fun EAX_CFB_send(
-        ass_data: List<String>,
-        msg_array: List<String>,
-        nonce: String,
-        IV0: String,
-        data_mac: String
+        msg_array: List<String>
     ): List<Int> {
-        val mtype = ass_data[0]
-        val sender = ass_data[1]
-        val reciever = ass_data[2]
-        val transmition = ass_data[3]
-
         var msg_conuter = 0
 
         for (i in 0..<msg_array.size) {
@@ -89,11 +88,7 @@ class EAX_CFB(
     }
 
     fun EAX_CFB_reciev(
-        ass_data: List<String>,
-        msg_array: List<List<Int>>,
-        nonce: String,
-        IV0: String,
-        data_mac: String
+        msg_array: List<List<Int>>
     ): List<Any> {
         var last = -1
         for (i in 0..<msg_array.size) {
